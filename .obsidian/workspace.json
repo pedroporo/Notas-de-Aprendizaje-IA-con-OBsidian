@@ -1,0 +1,249 @@
+{
+  "main": {
+    "id": "0a21d18a85d7ccd7",
+    "type": "split",
+    "children": [
+      {
+        "id": "14f32c39b28b6cbf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fa2aa3a1093751ab",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          },
+          {
+            "id": "1c228c750ee60390",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "7. Transformers.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d87afd99e5f00c5d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2. Perceptron Multicapa.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "ab91a758dbd72772",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "3. Tipos de entrenamiento.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "578d7e75e44da756",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "4. Regresor lineal.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "9079dbe3851fb2c4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "5. IA evolutiva.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "e292cc27278e82b1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "6. Aprendizaje Convolucional y Adversativo.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8ad03628fbd841ac",
+    "type": "split",
+    "children": [
+      {
+        "id": "df2ab1f727a96590",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "303163143c6c144a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "97ddb0b41356c133",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "530b3063dfe751a1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b11a87952c6ae4a5",
+    "type": "split",
+    "children": [
+      {
+        "id": "06c32946b5a7b5d6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "618e5aaee1d586cb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "7. Transformers.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "61f5a78f3b79ef86",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "7. Transformers.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "821d53be2226033e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "45d1e532a1c7205e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "7. Transformers.md"
+              }
+            }
+          },
+          {
+            "id": "219e3cde64f94957",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo canvas": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "1c228c750ee60390",
+  "lastOpenFiles": [
+    "Notas-de-Aprendizaje-IA-obsidian",
+    "README.md",
+    "7. Transformers.md",
+    "6. Aprendizaje Convolucional y Adversativo.md",
+    "5. IA evolutiva.md",
+    "4. Regresor lineal.md",
+    "3. Tipos de entrenamiento.md",
+    "2. Perceptron Multicapa.md",
+    "1. Perceptron Simple.md",
+    "Code_Tests/PErceptron_simple.py",
+    "Code_Tests",
+    "Nueva carpeta",
+    "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
+    "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md",
+    "Excalidraw",
+    "test.txt",
+    "Nuevo Documento de texto.txt"
+  ]
+}

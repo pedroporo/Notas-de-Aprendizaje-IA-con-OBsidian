@@ -21,7 +21,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
@@ -142,7 +142,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -159,7 +159,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -182,7 +182,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Transformers.md"
+                "file": "README.md"
               }
             }
           },
@@ -223,13 +223,13 @@
   },
   "active": "d87afd99e5f00c5d",
   "lastOpenFiles": [
+    "1. Perceptron Simple.md",
+    "7. Transformers.md",
     "README.md",
     "6. Aprendizaje Convolucional y Adversativo.md",
     "4. Regresor lineal.md",
     "3. Tipos de entrenamiento.md",
     "2. Perceptron Multicapa.md",
-    "1. Perceptron Simple.md",
-    "7. Transformers.md",
     "5. IA evolutiva.md",
     "Notas-de-Aprendizaje-IA-obsidian",
     "Code_Tests/PErceptron_simple.py",

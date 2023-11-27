@@ -16,24 +16,12 @@
             }
           },
           {
-            "id": "1c228c750ee60390",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "7. Transformers.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
             "id": "d87afd99e5f00c5d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2. Perceptron Multicapa.md",
+                "file": "7. Transformers.md",
                 "mode": "source",
                 "source": false
               }
@@ -205,14 +193,21 @@
               "type": "advanced-tables-toolbar",
               "state": {}
             }
+          },
+          {
+            "id": "7b33ed036b66ad1e",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {}
+            }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -226,17 +221,17 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "1c228c750ee60390",
+  "active": "d87afd99e5f00c5d",
   "lastOpenFiles": [
-    "5. IA evolutiva.md",
-    "1. Perceptron Simple.md",
-    "2. Perceptron Multicapa.md",
-    "3. Tipos de entrenamiento.md",
-    "4. Regresor lineal.md",
-    "6. Aprendizaje Convolucional y Adversativo.md",
-    "7. Transformers.md",
-    "Notas-de-Aprendizaje-IA-obsidian",
     "README.md",
+    "6. Aprendizaje Convolucional y Adversativo.md",
+    "4. Regresor lineal.md",
+    "3. Tipos de entrenamiento.md",
+    "2. Perceptron Multicapa.md",
+    "1. Perceptron Simple.md",
+    "7. Transformers.md",
+    "5. IA evolutiva.md",
+    "Notas-de-Aprendizaje-IA-obsidian",
     "Code_Tests/PErceptron_simple.py",
     "Code_Tests",
     "Nueva carpeta",

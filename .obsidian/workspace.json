@@ -21,7 +21,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "7. Transformers.md",
                 "mode": "source",
                 "source": false
               }
@@ -142,7 +142,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "7. Transformers.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -159,7 +159,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "7. Transformers.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -182,7 +182,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "7. Transformers.md"
               }
             }
           },
@@ -223,13 +223,13 @@
   },
   "active": "d87afd99e5f00c5d",
   "lastOpenFiles": [
+    "README.md",
     "gitinit.sh",
     "Documento sin título",
     "hola.txt",
     "teste.java",
     "1. Perceptron Simple.md",
     "7. Transformers.md",
-    "README.md",
     "6. Aprendizaje Convolucional y Adversativo.md",
     "4. Regresor lineal.md",
     "3. Tipos de entrenamiento.md",
@@ -242,7 +242,6 @@
     "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
     "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md",
     "Excalidraw",
-    "test.txt",
-    "Nuevo Documento de texto.txt"
+    "test.txt"
   ]
 }

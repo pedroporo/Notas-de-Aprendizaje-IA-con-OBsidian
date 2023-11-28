@@ -14,117 +14,8 @@
               "type": "empty",
               "state": {}
             }
-          },
-          {
-            "id": "d87afd99e5f00c5d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "206241f42f43a4dd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "a1048c8c150e7ccd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "10c3c0efcd49bab6",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "9431630cd2ef2405",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "ab91a758dbd72772",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "578d7e75e44da756",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "9079dbe3851fb2c4",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "e292cc27278e82b1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
-                "mode": "source",
-                "source": false
-              }
-            }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "vertical"
@@ -190,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -207,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -229,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
-              }
+              "state": {}
             }
           },
           {
@@ -269,9 +156,11 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "9431630cd2ef2405",
+  "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
+    "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "README.md",
     "7. Transformers/7. Transformers (Research).md",
     "1.Perceptron Simple/Codigo de ejemplo/PErceptron_simple.py",
@@ -280,7 +169,6 @@
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
     "6. Aprendizaje Convolucional y Adversativo",
     "5. IA evolutiva/5. IA evolutiva (Research).md",
-    "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "5. IA evolutiva",
     "4. Regresor lineal/4. Regresor lineal (Research).md",
     "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
@@ -291,7 +179,6 @@
     "3. Tipos de entrenamiento",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa",
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Codigo de ejemplo",
     "1.Perceptron Simple",
     "key.txt.pub",

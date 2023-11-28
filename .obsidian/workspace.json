@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md"
               }
             }
           },
@@ -166,6 +166,7 @@
   },
   "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
+    "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (Research).md",
     "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
@@ -191,7 +192,6 @@
     "7. Transformers/7. Transformers (Research).md",
     "README.md",
     "libros1.png",
-    "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
     "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md"
   ]

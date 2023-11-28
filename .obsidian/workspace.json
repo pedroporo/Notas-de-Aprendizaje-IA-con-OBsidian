@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
               }
             }
           },
@@ -150,8 +150,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -167,11 +166,11 @@
   },
   "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
     "1.Perceptron Simple/imagenes",
     "1.Perceptron Simple/Carpeta sin título",
-    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "7. Transformers/7. Transformers (Research).md",
     "README.md",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",

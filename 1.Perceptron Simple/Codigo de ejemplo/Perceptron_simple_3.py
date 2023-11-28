@@ -5,17 +5,21 @@ class test:
         self.velocidadDeAprendizaje = velocidadDeAprendizaje
         self.interacciones = interacciones
     def prediccion(self, inputs):
-        peso_suma = sum(x*w for w,x in zip (self.peso,inputs))+self.bias
+        peso_suma = sum(w*x for w,x in zip (self.peso,inputs))+self.bias
         return 1 if peso_suma >=0 else 0
     def entrenamiento (self, datosDelEntrenamiento):
         for interaccion in range(self.interacciones):
             for inputs, traget in datosDelEntrenamiento:
-                prediccion = self.predict(inputs)
+                prediccion = self.prediccion(inputs)
                 error = traget - prediccion
-                self.peso=[w+self.velocidadDeAprendizaje*error*x*w for w,x in zip (self.peso,inputs)]
+                self.peso=[w+self.velocidadDeAprendizaje*error*x for w,x in zip (self.peso,inputs)]
                 self.bias += self.velocidadDeAprendizaje*error
 
 datosDelEntrnamiento = [((0,0),0),((0,1),0),((1,0),0),((1,1),1)]
 
 perceptron=test(num_imputs=2)
-perceptron.entrenamiento(datosDelEntrenamiento)
+perceptron.entrenamiento(datosDelEntrnamiento)
+print(perceptron.prediccion((0,0)))
+print(perceptron.prediccion((0,1)))
+print(perceptron.prediccion((1,0)))
+print(perceptron.prediccion((1,1)))

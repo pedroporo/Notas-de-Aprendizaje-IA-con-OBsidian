@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
               }
             }
           },
@@ -167,13 +167,13 @@
   },
   "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
-    "README.md",
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
-    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "7. Transformers/7. Transformers (Research).md",
+    "README.md",
+    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "libros1.png",
     "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
-    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "1.Perceptron Simple/Codigo de ejemplo/PErceptron_simple.py",
     "7. Transformers",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",

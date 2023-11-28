@@ -21,7 +21,19 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "206241f42f43a4dd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2. Perceptron Multicapa.md",
                 "mode": "source",
                 "source": false
               }
@@ -76,7 +88,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -142,7 +154,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "2. Perceptron Multicapa.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -159,7 +171,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Transformers.md",
+                "file": "2. Perceptron Multicapa.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -182,7 +194,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Transformers.md"
+                "file": "2. Perceptron Multicapa.md"
               }
             }
           },
@@ -221,8 +233,13 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "d87afd99e5f00c5d",
+  "active": "303163143c6c144a",
   "lastOpenFiles": [
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
+    "1.Perceptron Simple/Codigo de ejemplo",
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+    "7. Transformers.md",
+    "1.Perceptron Simple",
     "key.txt.pub",
     "key.txt",
     "README.md",
@@ -230,8 +247,6 @@
     "Documento sin título",
     "hola.txt",
     "teste.java",
-    "1. Perceptron Simple.md",
-    "7. Transformers.md",
     "6. Aprendizaje Convolucional y Adversativo.md",
     "4. Regresor lineal.md",
     "3. Tipos de entrenamiento.md",
@@ -239,10 +254,7 @@
     "5. IA evolutiva.md",
     "Notas-de-Aprendizaje-IA-obsidian",
     "Code_Tests/PErceptron_simple.py",
-    "Code_Tests",
-    "Nueva carpeta",
     "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
-    "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md",
-    "Excalidraw"
+    "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md"
   ]
 }

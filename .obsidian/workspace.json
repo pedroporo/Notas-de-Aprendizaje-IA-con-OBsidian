@@ -69,7 +69,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -190,7 +190,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -207,7 +207,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -230,7 +230,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
               }
             }
           },
@@ -271,6 +271,10 @@
   },
   "active": "9431630cd2ef2405",
   "lastOpenFiles": [
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+    "README.md",
+    "7. Transformers/7. Transformers (Research).md",
+    "1.Perceptron Simple/Codigo de ejemplo/PErceptron_simple.py",
     "7. Transformers",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
@@ -289,13 +293,8 @@
     "2. Perceptron Multicapa",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Codigo de ejemplo",
-    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
-    "7. Transformers/7. Transformers (Research).md",
     "1.Perceptron Simple",
     "key.txt.pub",
-    "key.txt",
-    "README.md",
-    "gitinit.sh",
     "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
     "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md"
   ]

@@ -8,3 +8,10 @@ El perceptrón está formado por una serie de componentes como:
 - **Función de activación.** Cada función de activación, o no lineal, toma un único número y realiza una determinada operación matemática fija sobre él. Hay varias funciones de activación que se pueden encontrar en la práctica, las más comunes son la Sigmoide o la ReLU o unidad lineal rectificada.
 - **Salida.** La suma ponderada se pasa a la función de activación y cualquier valor que obtengamos después del cálculo es nuestra salida predicha.
 ![[imagenes/perceptron.jpg]]
+## Modelo de perceptrón de una capa
+
+Un modelo de perceptrón de una capa incluye una red feedforward que depende de una función de transferencia de umbral en su modelo. Es el tipo más sencillo de red neuronal artificial que puede analizar solo objetos linealmente separables con resultados binarios, es decir, 1 y 0.
+
+Si hablamos del funcionamiento del modelo de perceptrón de una capa, su algoritmo no tiene información previa, por lo que inicialmente, los pesos se asignan de forma inconstante, entonces el algoritmo suma todas las entradas ponderadas, si el valor añadido es más que algún valor predeterminado o valor umbral, entonces el perceptrón de una capa se declara activo y entrega la salida como +1.
+
+En palabras sencillas, los valores de entrada múltiples alimentan el modelo del perceptrón, el modelo se ejecuta con los valores de entrada, y si el valor estimado es el mismo que la salida requerida, entonces el rendimiento del modelo se encuentra satisfecho, por lo que los pesos no exigen cambios. De hecho, si el modelo no cumple con el resultado requerido, entonces se realizan algunos cambios en los pesos para minimizar los errores.

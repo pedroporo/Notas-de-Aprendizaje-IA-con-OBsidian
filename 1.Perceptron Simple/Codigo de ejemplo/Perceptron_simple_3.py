@@ -12,3 +12,10 @@ class test:
             for inputs, traget in datosDelEntrenamiento:
                 prediccion = self.predict(inputs)
                 error = traget - prediccion
+                self.peso=[w+self.velocidadDeAprendizaje*error*x*w for w,x in zip (self.peso,inputs)]
+                self.bias += self.velocidadDeAprendizaje*error
+
+datosDelEntrnamiento = [((0,0),0),((0,1),0),((1,0),0),((1,1),1)]
+
+perceptron=test(num_imputs=2)
+perceptron.entrenamiento(datosDelEntrenamiento)

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md"
               }
             }
           },
@@ -166,8 +166,10 @@
   },
   "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
-    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
+    "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple_4.py",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
+    "README.md",
+    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
@@ -190,7 +192,6 @@
     "1.Perceptron Simple/Codigo de ejemplo/Documento sin título",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
     "7. Transformers/7. Transformers (Research).md",
-    "README.md",
     "libros1.png",
     "Excalidraw/Drawing 2023-11-24 21.56.30.excalidraw.md",
     "Excalidraw/Drawing 2023-11-24 21.49.50.excalidraw.md"

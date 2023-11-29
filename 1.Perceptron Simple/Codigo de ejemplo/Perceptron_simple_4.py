@@ -9,5 +9,8 @@ class perceptronSimpleCode:
         return 1 if peso_suma >=0 else 0
     def entrenamiento(self,training_data):
         for interaccion in range(self.interacciones):
-            for input in range(self.interacciones):
-                prediccion= self.prediccion(inputs)
+            for inputs,traget in training_data:
+                prediccion = self.prediccion(inputs)
+                error = traget -prediccion
+                self.pesos = [ w +self.velocidadDeAprendizaje*error*x for w * x in zip(self.peso,inputs)]
+                self.bias += self.velocidadDeAprendizaje *error

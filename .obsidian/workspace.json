@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md"
+                "file": "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md"
               }
             }
           },
@@ -164,8 +164,14 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "7b33ed036b66ad1e",
+  "active": "fa2aa3a1093751ab",
   "lastOpenFiles": [
+    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
+    "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
+    "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
+    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "2. Perceptron Multicapa/Codigo de ejemplo/Perceptron_multicapa.py",
     "2. Perceptron Multicapa/Codigo de ejemplo/Perceptron_multicapa_Chatgpt.py",
     "2. Perceptron Multicapa/Codigo de ejemplo/Perceptron_multicapa_",
@@ -173,22 +179,15 @@
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (Research).md",
-    "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "4. Regresor lineal/4. Regresor lineal (Research).md",
     "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (Research).md",
-    "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
-    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
-    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
-    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple_3.py",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple_2.py",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple_1.py",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple 2.py",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple 2",
     "1.Perceptron Simple/Codigo de ejemplo/Documento sin título",
-    "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple 1.py",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
     "7. Transformers/7. Transformers (Research).md",
     "README.md",

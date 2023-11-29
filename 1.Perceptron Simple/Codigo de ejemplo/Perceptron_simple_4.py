@@ -5,4 +5,9 @@ class perceptronSimpleCode:
         self.velocidadDeAprendizaje=velocidadDeAprendizaje
         self.interacciones=interacciones
     def prediccion(self,inputs):
-        peso_suma = sum()+self.bias
+        peso_suma = sum(w*x for w,x in zip(self.peso,inputs))+self.bias
+        return 1 if peso_suma >=0 else 0
+    def entrenamiento(self,training_data):
+        for interaccion in range(self.interacciones):
+            for input in range(self.interacciones):
+                prediccion= self.prediccion(inputs)

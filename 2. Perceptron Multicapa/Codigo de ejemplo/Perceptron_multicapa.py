@@ -30,3 +30,8 @@ classificadorOculto=np.zeros(1,tamañoOculto)
 #[         ][Columnas=1]
 #[Filas = 1][          ]
 classificadorSalida=np.zeros(1,tamañoDeSalida)
+#La velocidad de aprendizaje es lo rapido que ira aprendiendo la ia, lo recomendable es ajustarlo a las necesidades que tenemos
+# (si es pequeño es mas preciso y si es mas grande es menos preciso)
+velocidadDeAprendizaje=0.1
+
+interacciones=10000

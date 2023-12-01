@@ -17,3 +17,12 @@ tamañoDeSalida=1
 np.random.seed(42)
 #Aqui se crean los pesos para la entrada a la capa oculto como minimo es el valor de la cantidad de caracteres y como maximo es el tamaño oculto
 pesosDeEntradaAOculto=np.random.uniform(size=(cantidadDeCaracteresPorEntrada,tamañoOculto))
+#Aqui se generan los pesos de la capa oculta a la capa de salida
+pesosDeOcultoASalida=np.random.uniform(size=(tamañoOculto,tamañoDeSalida))
+#Esto de aqui hace un array con valor 0 y su forma es asi:
+#[         ][Columnas=1]
+#[Filas = 4][          ]
+#[Filas = 4][          ]
+#[Filas = 4][          ]
+#[Filas = 4][          ]
+classificadorOculto=np.zeros(1,tamañoOculto)

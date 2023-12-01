@@ -13,14 +13,14 @@ class perceptronSimpleCode:
             for inputs,traget in training_data:
                 prediccion = self.prediccion(inputs)
                 error = traget -prediccion
-                self.pesos = [ w +self.velocidadDeAprendizaje*error*x for w * x in zip(self.peso,inputs)]
+                self.peso=[w+self.velocidadDeAprendizaje*error*x for w , x in zip(self.peso,inputs)]
                 self.bias += self.velocidadDeAprendizaje *error
 
 training_data = [((0,0),0),((0,1),0),((1,0),0),((1,1),1)]
 
 perceptrons = perceptronSimpleCode(num_inputs=2)
-perceptrons.train(training_data)
-print(perceptron_and.predict((0, 0)))  # Salida esperada: 0
-print(perceptron_and.predict((0, 1)))  # Salida esperada: 0
-print(perceptron_and.predict((1, 0)))  # Salida esperada: 0
-print(perceptron_and.predict((1, 1)))  # Salida esperada: 1
+perceptrons.entrenamiento(training_data)
+print(perceptronSimpleCode.prediccion((0, 0)))  # Salida esperada: 0
+print(perceptronSimpleCode.prediccion((0, 1)))  # Salida esperada: 0
+print(perceptronSimpleCode.prediccion((1, 0)))  # Salida esperada: 0
+print(perceptronSimpleCode.prediccion((1, 1)))  # Salida esperada: 1

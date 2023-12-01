@@ -26,3 +26,7 @@ pesosDeOcultoASalida=np.random.uniform(size=(tamañoOculto,tamañoDeSalida))
 #[Filas = 4][          ]
 #[Filas = 4][          ]
 classificadorOculto=np.zeros(1,tamañoOculto)
+#Esto de aqui hace un array con valor 0 y su forma es asi:
+#[         ][Columnas=1]
+#[Filas = 1][          ]
+classificadorSalida=np.zeros(1,tamañoDeSalida)

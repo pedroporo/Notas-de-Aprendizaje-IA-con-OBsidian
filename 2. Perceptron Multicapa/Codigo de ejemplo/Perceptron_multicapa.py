@@ -33,5 +33,5 @@ classificadorSalida=np.zeros(1,tamañoDeSalida)
 #La velocidad de aprendizaje es lo rapido que ira aprendiendo la ia, lo recomendable es ajustarlo a las necesidades que tenemos
 # (si es pequeño es mas preciso y si es mas grande es menos preciso)
 velocidadDeAprendizaje=0.1
-
+#Esto son el numero de vezes que se va a entrenar la inteligencia artificial
 interacciones=10000

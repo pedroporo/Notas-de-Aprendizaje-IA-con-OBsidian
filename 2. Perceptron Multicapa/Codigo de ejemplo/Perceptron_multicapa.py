@@ -35,3 +35,9 @@ classificadorSalida=np.zeros(1,tamañoDeSalida)
 velocidadDeAprendizaje=0.1
 #Esto son el numero de vezes que se va a entrenar la inteligencia artificial
 interacciones=10000
+
+#Aqui se hace el entrenamiento de la inteligencia artificial
+for interaccion in range(interacciones):
+    entrada_oculta = np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
+    salida_oculta = np.dot(entrada_oculta)
+    

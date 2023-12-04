@@ -47,3 +47,4 @@ for interaccion in range(interacciones):
     perdida = 0.5 * ((salida_predicha-capasDeSalida)** 2)
 
     errorDeSalida = capasDeSalida-salida_predicha
+    

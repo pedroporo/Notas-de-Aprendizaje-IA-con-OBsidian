@@ -43,5 +43,7 @@ for interaccion in range(interacciones):
     
     datos_de_entrada_para_salida=np.dot(salida_oculta,pesosDeEntradaAOculto)+classificadorSalida
     salida_predicha = activacionSigmoide(datos_de_entrada_para_salida)
-    
+    #Aqui se calcula la perdida que tiene las respuestas haciendo 0.5 por la salida predicha - las capas de salida elevadas por 2
     perdida = 0.5 * ((salida_predicha-capasDeSalida)** 2)
+
+    errorDeSalida = capasDeSalida-salida_predicha

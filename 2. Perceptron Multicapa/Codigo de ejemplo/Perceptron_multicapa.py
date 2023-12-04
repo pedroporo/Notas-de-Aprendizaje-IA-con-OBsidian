@@ -41,3 +41,7 @@ for interaccion in range(interacciones):
     entrada_oculta = np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
     salida_oculta = np.dot(entrada_oculta)
     
+    datos_de_entrada_para_salida=np.dot(salida_oculta,pesosDeEntradaAOculto)+classificadorSalida
+    salida_predicha = activacionSigmoide(datos_de_entrada_para_salida)
+    
+    perdida = 0.5 * ((salida_predicha-capasDeSalida)** 2)

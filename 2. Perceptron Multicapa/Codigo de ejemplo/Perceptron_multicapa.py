@@ -39,7 +39,7 @@ interacciones=10000
 #Aqui se hace el entrenamiento de la inteligencia artificial
 for interaccion in range(interacciones):
     entrada_oculta = np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
-    salida_oculta = np.dot(entrada_oculta)
+    salida_oculta = activacionSigmoide(entrada_oculta)
     
     datos_de_entrada_para_salida=np.dot(salida_oculta,pesosDeEntradaAOculto)+classificadorSalida
     salida_predicha = activacionSigmoide(datos_de_entrada_para_salida)
@@ -48,4 +48,7 @@ for interaccion in range(interacciones):
 
     errorDeSalida = capasDeSalida-salida_predicha
     deltaSalida = errorDeSalida * sigmoideDerivativo(salida_predicha)
+
+    errorOculto = deltaSalida.dot(pesosDeOcultoASalida.T)
+    deltaOculta = errorOculto * sigmoideDerivativo(salida_oculta)
     

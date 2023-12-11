@@ -51,4 +51,9 @@ for interaccion in range(interacciones):
 
     errorOculto = deltaSalida.dot(pesosDeOcultoASalida.T)
     deltaOculta = errorOculto * sigmoideDerivativo(salida_oculta)
+
+    pesosDeOcultoASalida += salida_oculta.T.dot(deltaSalida)*velocidadDeAprendizaje
+    pesosDeEntradaAOculto += datosDeEntrada.T.dot(deltaOculta)*velocidadDeAprendizaje
+
+    classificadorSalida+=np.sum(deltaSalida,axis=0,keepdims=true)
     

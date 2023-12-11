@@ -25,11 +25,11 @@ pesosDeOcultoASalida=np.random.uniform(size=(tamañoOculto,tamañoDeSalida))
 #[Filas = 4][          ]
 #[Filas = 4][          ]
 #[Filas = 4][          ]
-classificadorOculto=np.zeros(1,tamañoOculto)
+classificadorOculto=np.zeros((1,tamañoOculto))
 #Esto de aqui hace un array con valor 0 y su forma es asi:
 #[         ][Columnas=1]
 #[Filas = 1][          ]
-classificadorSalida=np.zeros(1,tamañoDeSalida)
+classificadorSalida=np.zeros((1,tamañoDeSalida))
 #La velocidad de aprendizaje es lo rapido que ira aprendiendo la ia, lo recomendable es ajustarlo a las necesidades que tenemos
 # (si es pequeño es mas preciso y si es mas grande es menos preciso)
 velocidadDeAprendizaje=0.1
@@ -62,3 +62,10 @@ for interaccion in range(interacciones):
     if interaccion % 1000 ==0:
         print(f'Interaccion {interaccion}, Perdida: {perdida}')
 
+entrada_oculta_final=np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
+salida_oculta_final=activacionSigmoide(entrada_oculta_final)
+salida_final=np.dot(entrada_oculta_final,pesosDeOcultoASalida)+classificadorSalida
+salida_predicha_final=activacionSigmoide(salida_final)
+
+print("\nPredicciones finales")
+print(salida_predicha_final)

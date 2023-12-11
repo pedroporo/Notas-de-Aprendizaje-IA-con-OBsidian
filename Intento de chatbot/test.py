@@ -6,7 +6,7 @@ def activacionSigmoide(x):
 def sigmoideDerivativo(x):
     return x *(1-x)
 
-intents=json.loads(open('intents.json').read())
+intents=json.loads(open('/home/batoi/Obsidian Vaults/Notas_De_Aprendizaje_IA_con_Obsidian/Notas-de-Aprendizaje-IA-con-OBsidian/Intento de chatbot/intents.json').read())
 
 for intent in intents['intents']:
     for pattern in intent['patterns']:

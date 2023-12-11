@@ -70,3 +70,5 @@ salida_predicha_final=activacionSigmoide(salida_final)
 
 print("\nPredicciones finales")
 print(salida_predicha_final)
+testeo='Hola como estas'.split()
+print(testeo)

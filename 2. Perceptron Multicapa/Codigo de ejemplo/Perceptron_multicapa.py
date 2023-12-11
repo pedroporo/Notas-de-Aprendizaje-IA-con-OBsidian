@@ -38,6 +38,7 @@ interacciones=10000
 
 #Aqui se hace el entrenamiento de la inteligencia artificial
 for interaccion in range(interacciones):
+
     entrada_oculta = np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
     salida_oculta = activacionSigmoide(entrada_oculta)
     
@@ -64,7 +65,7 @@ for interaccion in range(interacciones):
 
 entrada_oculta_final=np.dot(datosDeEntrada,pesosDeEntradaAOculto)+classificadorOculto
 salida_oculta_final=activacionSigmoide(entrada_oculta_final)
-salida_final=np.dot(entrada_oculta_final,pesosDeOcultoASalida)+classificadorSalida
+salida_final=np.dot(salida_oculta_final,pesosDeOcultoASalida)+classificadorSalida
 salida_predicha_final=activacionSigmoide(salida_final)
 
 print("\nPredicciones finales")

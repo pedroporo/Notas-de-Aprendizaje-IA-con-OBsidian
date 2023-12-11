@@ -55,5 +55,10 @@ for interaccion in range(interacciones):
     pesosDeOcultoASalida += salida_oculta.T.dot(deltaSalida)*velocidadDeAprendizaje
     pesosDeEntradaAOculto += datosDeEntrada.T.dot(deltaOculta)*velocidadDeAprendizaje
 
-    classificadorSalida+=np.sum(deltaSalida,axis=0,keepdims=true)
-    
+    classificadorSalida+=np.sum(deltaSalida,axis=0,keepdims=True)*velocidadDeAprendizaje
+
+    classificadorOculto+=np.sum(deltaOculta,axis=0,keepdims=True)*velocidadDeAprendizaje
+
+    if interaccion % 1000 ==0:
+        print(f'Interaccion {interaccion}, Perdida: {perdida}')
+

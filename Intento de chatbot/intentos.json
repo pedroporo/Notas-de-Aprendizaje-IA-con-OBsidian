@@ -1,0 +1,18 @@
+{"intents": [
+    {"tag": "saludos",
+      "patterns": ["Hola", "¿Cómo estás?", "¿Hay alguien ahí?", "Hola", "Buenos días", "¿Qué tal?", "Hey", "Saludos"],
+      "responses": ["¡Hola!", "¡Me alegro de volver a verle!", "Hola, ¿en qué puedo ayudarle?"],
+      "context_set": ""
+    },
+    {"tag": "despedidas",
+      "patterns": ["Chao", "Te veo despues", "Adios", "Me voy", "Ten un bonito dia", "bye", "chao", "nos vemos"],
+      "responses": ["Me entristece verte marchar :(", "Hablamos más tarde", "Adiós!"],
+      "context_set": ""
+    },
+    {"tag": "programacion",
+      "patterns": ["¿Qué es la programación??", "¿Qué es la codificación?", "Háblame de programación", "Háblame de la codificación", "¿Qué es el desarrollo de software?"],
+      "responses": ["Programar, codificar o desarrollar software significa escribir código informático para automatizar tareas."],
+      "context_set": ""
+    }
+  ]
+  }

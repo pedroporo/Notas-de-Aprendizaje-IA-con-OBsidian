@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 def activacionSigmoide(x):
     return 1/(1+np.exp(-x))

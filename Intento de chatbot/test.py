@@ -4,12 +4,14 @@ import json
 intents=json.loads(open('/home/batoi/Obsidian Vaults/Notas_De_Aprendizaje_IA_con_Obsidian/Notas-de-Aprendizaje-IA-con-OBsidian/Intento de chatbot/intents.json').read())
 
 for intent in intents['intents']:
-    for pattern in intent['patterns']:
-        print(pattern.split())
-print('Respuestas')
-for intent in intents['intents']:
-    for response in intent['responses']:
-        print(response.split())
+        print('Entradas')
+        for pattern in intent['patterns']:
+            print(pattern.split())
+        print('Respuestas')
+        for response in intent['responses']:
+            print(response.split())
+
+
 
 
 def activacionSigmoide(x):
@@ -20,12 +22,15 @@ def sigmoideDerivativo(x):
 datosDeEntrada = np.array([[0,0],[0,1],[1,0],[1,1]])
 capasDeSalida = np.array(([0],[1],[1],[0]))
 
+
 cantidadDeCaracteresPorEntrada = 2
-tamañoOculto=4
+tamañoOculto=7
 tamañoDeSalida=1
 np.random.seed(42)
 pesosDeEntradaAOculto=np.random.uniform(size=(cantidadDeCaracteresPorEntrada,tamañoOculto))
 pesosDeOcultoASalida=np.random.uniform(size=(tamañoOculto,tamañoDeSalida))
+print(pesosDeEntradaAOculto.shape)
+print(pesosDeOcultoASalida.shape)
 classificadorOculto=np.zeros((1,tamañoOculto))
 classificadorSalida=np.zeros((1,tamañoDeSalida))
 velocidadDeAprendizaje=0.1

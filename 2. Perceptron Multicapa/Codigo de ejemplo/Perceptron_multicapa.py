@@ -74,3 +74,5 @@ testeo='Hola como estas'.split()
 print(testeo)
 frase = ['hola','como','estas','pedro']
 print(frase)
+for frase in range(frase.count):
+    print(frase)

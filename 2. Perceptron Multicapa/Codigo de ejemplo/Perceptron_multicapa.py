@@ -74,4 +74,6 @@ testeo='Hola como estas'.split()
 print(testeo)
 frase = ['hola','como','estas','pedro']
 print(frase)
-print(frase.__sizeof__)
+
+for w in frase:
+    print(frase[w])

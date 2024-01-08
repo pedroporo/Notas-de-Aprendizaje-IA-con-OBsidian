@@ -75,5 +75,5 @@ print(testeo)
 frase = ['hola','como','estas','pedro']
 print(frase)
 
-for w in frase:
+for w in range(len(frase)):
     print(frase[w])

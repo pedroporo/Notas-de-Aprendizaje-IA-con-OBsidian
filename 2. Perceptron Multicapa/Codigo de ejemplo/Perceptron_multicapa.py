@@ -72,3 +72,5 @@ print("\nPredicciones finales")
 print(salida_predicha_final)
 testeo='Hola como estas'.split()
 print(testeo)
+frase = ['hola','como','estas','pedro']
+print(frase)

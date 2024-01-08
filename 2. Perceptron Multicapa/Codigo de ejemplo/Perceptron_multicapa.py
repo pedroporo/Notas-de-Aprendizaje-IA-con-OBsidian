@@ -77,6 +77,7 @@ print(frase)
 
 for w in range(len(frase)):
     print(frase[w])
-while True:
-    entrada=str=input('Tu: ')
-    print(entrada)
+    while w == 2:
+        entrada=str=input('Tu: ')
+        print(entrada)
+        w+=1

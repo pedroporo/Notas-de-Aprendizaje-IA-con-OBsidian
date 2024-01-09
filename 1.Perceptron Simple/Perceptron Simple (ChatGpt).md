@@ -13,3 +13,5 @@ $$
 El perceptrón simple puede aprender a ajustar sus pesos durante el entrenamiento para realizar la clasificación deseada. Sin embargo, es importante tener en cuenta que un perceptrón simple solo puede aprender a clasificar conjuntos de datos linealmente separables, es decir, conjuntos de datos que pueden ser divididos por una línea recta en el espacio de entrada.
 
 Para abordar problemas más complejos y no lineales, se utilizan redes neuronales más avanzadas, como las redes neuronales multicapa, que constan de múltiples capas de perceptrones interconectados. Estas redes pueden aprender a representar y clasificar patrones más complejos en los datos. 
+
+## Para explicarlo mas a fondo usaremos es siguente codigo:

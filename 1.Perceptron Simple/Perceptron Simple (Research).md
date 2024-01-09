@@ -38,10 +38,10 @@ training_data = [((0,0),0),((0,1),0),((1,0),0),((1,1),1)]
 
 perceptrons = perceptronSimpleCode(num_inputs=2)
 perceptrons.entrenamiento(training_data)
-print(perceptronSimpleCode.prediccion((0, 0))) # Salida esperada: 0
-print(perceptronSimpleCode.prediccion((0, 1))) # Salida esperada: 0
-print(perceptronSimpleCode.prediccion((1, 0))) # Salida esperada: 0
-print(perceptronSimpleCode.prediccion((1, 1))) # Salida esperada: 1
+print(perceptrons.prediccion((0, 0))) # Salida esperada: 0
+print(perceptrons.prediccion((0, 1))) # Salida esperada: 0
+print(perceptrons.prediccion((1, 0))) # Salida esperada: 0
+print(perceptrons.prediccion((1, 1))) # Salida esperada: 1
 ```
 
-La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la definicion `__init__` 
+La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la definicion `__init__`  que inicializa `self` que es para hacer referencia a un objeto

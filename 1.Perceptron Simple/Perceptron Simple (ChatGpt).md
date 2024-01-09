@@ -14,4 +14,3 @@ El perceptrón simple puede aprender a ajustar sus pesos durante el entrenamient
 
 Para abordar problemas más complejos y no lineales, se utilizan redes neuronales más avanzadas, como las redes neuronales multicapa, que constan de múltiples capas de perceptrones interconectados. Estas redes pueden aprender a representar y clasificar patrones más complejos en los datos. 
 
-## Para explicarlo mas a fondo usaremos es siguente codigo:

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
               }
             }
           },
@@ -166,6 +166,9 @@
   },
   "active": "13e6ae501995d04e",
   "lastOpenFiles": [
+    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
+    "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (Research).md",
     "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
     "4. Regresor lineal/4. Regresor lineal (Research).md",
@@ -176,9 +179,7 @@
     "7. Transformers/7. Transformers (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
-    "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "2. Perceptron Multicapa/metodos_de_activacion.png",
     "Intento de chatbot/intents.json",
     "Intento de chatbot/intentos.json",
@@ -192,7 +193,6 @@
     "7. Transformers",
     "6. Aprendizaje Convolucional y Adversativo",
     "5. IA evolutiva",
-    "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
     "1. Perceptron Simple.md",
     "7. Transformers.md",

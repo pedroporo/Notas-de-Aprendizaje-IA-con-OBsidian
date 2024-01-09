@@ -44,3 +44,4 @@ print(perceptronSimpleCode.prediccion((1, 0))) # Salida esperada: 0
 print(perceptronSimpleCode.prediccion((1, 1))) # Salida esperada: 1
 ```
 
+La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la definicion `__init__` 

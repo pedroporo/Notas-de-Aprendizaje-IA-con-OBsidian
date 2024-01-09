@@ -11,9 +11,11 @@
             "id": "13e6ae501995d04e",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "markdown",
               "state": {
-                "file": "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf"
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf"
+                "file": "1.Perceptron Simple/Perceptron Simple (ChatGpt).md"
               }
             }
           },
@@ -164,6 +166,7 @@
   },
   "active": "13e6ae501995d04e",
   "lastOpenFiles": [
+    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
@@ -175,7 +178,6 @@
     "Carpeta sin título",
     "2. Perceptron Multicapa/sample-activation-functions-square.png",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
-    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "Sin título.canvas",
     "7. Transformers/7. Transformers (Research).md",
     "1.Perceptron Simple/Codigo de ejemplo/Perceptron_simple_4.py",

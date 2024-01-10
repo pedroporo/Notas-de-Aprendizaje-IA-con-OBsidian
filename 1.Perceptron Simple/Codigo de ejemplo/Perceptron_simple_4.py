@@ -11,6 +11,7 @@ class perceptronSimpleCode:
     def entrenamiento(self,training_data):
         for interaccion in range(self.interacciones):
             for inputs, traget in training_data:
+                print(traget)
                 prediccion = self.prediccion(inputs)
                 error = traget -prediccion
                 self.peso=[w+self.velocidadDeAprendizaje*error*x for w,x in zip(self.peso,inputs)]

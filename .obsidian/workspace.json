@@ -11,14 +11,11 @@
             "id": "651abc467876da80",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Orden de que hay que saber en orden.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": -297.95,
-                  "zoom": 0
-                }
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -169,8 +166,8 @@
   },
   "active": "651abc467876da80",
   "lastOpenFiles": [
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "Orden de que hay que saber en orden.canvas",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (Research).md",

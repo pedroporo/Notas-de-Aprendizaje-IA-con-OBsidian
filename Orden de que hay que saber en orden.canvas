@@ -1,0 +1,7 @@
+{
+	"nodes":[
+		{"id":"4fc4b6e7aa8babb6","x":-80,"y":-100,"width":250,"height":60,"type":"text","text":""},
+		{"id":"1e204572f3e9c23e","x":-400,"y":-600,"width":400,"height":400,"type":"file","file":"1.Perceptron Simple/Perceptron Simple (Research).md"}
+	],
+	"edges":[]
+}

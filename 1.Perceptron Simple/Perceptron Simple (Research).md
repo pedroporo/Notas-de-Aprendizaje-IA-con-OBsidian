@@ -15,7 +15,7 @@ Un modelo de perceptrón de una capa incluye una red feedforward que depende de 
 Si hablamos del funcionamiento del modelo de perceptrón de una capa, su algoritmo no tiene información previa, por lo que inicialmente, los pesos se asignan de forma inconstante, entonces el algoritmo suma todas las entradas ponderadas, si el valor añadido es más que algún valor predeterminado o valor umbral, entonces el perceptrón de una capa se declara activo y entrega la salida como +1.
 
 En palabras sencillas, los valores de entrada múltiples alimentan el modelo del perceptrón, el modelo se ejecuta con los valores de entrada, y si el valor estimado es el mismo que la salida requerida, entonces el rendimiento del modelo se encuentra satisfecho, por lo que los pesos no exigen cambios. De hecho, si el modelo no cumple con el resultado requerido, entonces se realizan algunos cambios en los pesos para minimizar los errores.
-## Para explicarlo mas a fondo usaremos es siguente codigo:
+## Para explicarlo mas a fondo usaremos es siguiente código:
 
 ```python
 class perceptronSimpleCode:
@@ -44,4 +44,4 @@ print(perceptrons.prediccion((1, 0))) # Salida esperada: 0
 print(perceptrons.prediccion((1, 1))) # Salida esperada: 1
 ```
 
-La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la definición `__init__`  que inicializa `self` que es para hacer referencia a un objeto dentro de si mismo, `num_inputs` que son la cantidad de datos que le vamos a meter
+La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la definición `__init__`  que inicializa `self` que es para hacer referencia a un objeto dentro de si mismo, `num_inputs` que es la cantidad de datos que le vamos a meter (En nuestro caso son 2 ya que estamos haciendo un and)

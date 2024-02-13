@@ -44,4 +44,4 @@ print(perceptrons.prediccion((1, 0))) # Salida esperada: 0
 print(perceptrons.prediccion((1, 1))) # Salida esperada: 1
 ```
 
-La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la funcion `__init__`  que inicializa `self` que es para hacer referencia a un objeto dentro de si mismo, `num_inputs` que es la cantidad de datos que le vamos a meter (En nuestro caso son 2 ya que estamos haciendo un AND), la variable velocidadDeAprendizaje es lo que se 
+La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la funcion `__init__`  que inicializa `self` que es para hacer referencia a un objeto dentro de si mismo, `num_inputs` que es la cantidad de datos que le vamos a meter (En nuestro caso son 2 ya que estamos haciendo un AND), la variable velocidadDeAprendizaje es lo que se le su

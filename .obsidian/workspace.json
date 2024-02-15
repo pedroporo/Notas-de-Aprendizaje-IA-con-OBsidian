@@ -15,8 +15,8 @@
               "state": {
                 "file": "Orden de que hay que saber en orden.canvas",
                 "viewState": {
-                  "x": -115,
-                  "y": -320.00000000000006,
+                  "x": 20,
+                  "y": -339.9999999999999,
                   "zoom": 0
                 }
               }
@@ -88,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "4. Regresor lineal/4. Regresor lineal (Research).md",
+                "file": "Orden de que hay que saber en orden.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +105,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "4. Regresor lineal/4. Regresor lineal (Research).md",
+                "file": "Orden de que hay que saber en orden.canvas",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -128,7 +128,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "4. Regresor lineal/4. Regresor lineal (Research).md"
+                "file": "Orden de que hay que saber en orden.canvas"
               }
             }
           },
@@ -169,6 +169,8 @@
   },
   "active": "651abc467876da80",
   "lastOpenFiles": [
+    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
+    "Orden de que hay que saber en orden.canvas",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "7. Transformers/7. Transformers (Research).md",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
@@ -182,8 +184,6 @@
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
-    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
-    "Orden de que hay que saber en orden.canvas",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
     "2. Perceptron Multicapa/metodos_de_activacion.png",
     "Intento de chatbot/intents.json",

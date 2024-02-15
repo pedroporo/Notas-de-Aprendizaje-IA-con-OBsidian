@@ -1,7 +1,8 @@
 {
 	"nodes":[
-		{"id":"4fc4b6e7aa8babb6","x":-80,"y":-100,"width":250,"height":60,"type":"text","text":""},
-		{"id":"1e204572f3e9c23e","x":-400,"y":-600,"width":400,"height":400,"type":"file","file":"1.Perceptron Simple/Perceptron Simple (Research).md"}
+		{"id":"4fc4b6e7aa8babb6","type":"text","text":"","x":-80,"y":-100,"width":250,"height":60},
+		{"id":"db57ff0798dc623a","x":80,"y":-640,"width":400,"height":400,"type":"file","file":"4. Regresor lineal/4. Regresor lineal (Research).md"},
+		{"id":"1e204572f3e9c23e","type":"file","file":"1.Perceptron Simple/Perceptron Simple (Research).md","x":-440,"y":-640,"width":400,"height":400}
 	],
 	"edges":[]
 }

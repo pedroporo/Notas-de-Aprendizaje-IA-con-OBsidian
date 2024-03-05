@@ -45,3 +45,25 @@ print(perceptrons.prediccion((1, 1))) # Salida esperada: 1
 ```
 
 La clase `perceptronSimpleCode` lo que hace es iniciar los valores y las funciones que vamos a usar, la funcion `__init__`  que inicializa `self` que es para hacer referencia a un objeto dentro de si mismo, `num_inputs` que es la cantidad de datos que le vamos a meter (En nuestro caso son 2 ya que estamos haciendo un AND), la variable `velocidadDeAprendizaje` es lo que se le sumara al peso en la hora del entrenamiento(osea los lejos que llegara en cada interaccion)y por ultimo lo que se importa 
+
+
+# Nota de la comprobacion de un elemento en una lista Python
+
+[Link](https://stackoverflow.com/questions/12867140/python-mysqldb-get-the-result-of-fetchall-in-a-list)
+[Link2](https://stackoverflow.com/questions/10406130/check-if-something-is-not-in-a-list-in-python)
+
+And what about list comprehensions? If result is `((123,), (234,), (345,))`:
+
+```python
+>>> row = [item[0] for item in cursor.fetchall()]
+>>> row
+[123, 234, 345]
+```
+
+If result is `({'id': 123}, {'id': 234}, {'id': 345})`:
+
+```python
+>>> row = [item['id'] for item in cursor.fetchall()]
+>>> row
+[123, 234, 345]
+```

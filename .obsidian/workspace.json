@@ -18,19 +18,8 @@
                 "source": false
               }
             }
-          },
-          {
-            "id": "feb27d87d4f80930",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.5.8"
-              }
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -175,7 +164,7 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "feb27d87d4f80930",
+  "active": "7b33ed036b66ad1e",
   "lastOpenFiles": [
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",

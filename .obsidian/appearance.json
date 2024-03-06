@@ -1,4 +1,8 @@
 {
   "accentColor": "",
-  "theme": "obsidian"
+  "theme": "obsidian",
+  "cssTheme": "Discordian",
+  "interfaceFontFamily": "Mithella",
+  "textFontFamily": "Mithella",
+  "monospaceFontFamily": "Mithella"
 }

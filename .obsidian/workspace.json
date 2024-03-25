@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
+                "file": "7. Transformers/7. Transformers (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
+                "file": "7. Transformers/7. Transformers (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
+                "file": "7. Transformers/7. Transformers (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
+                "file": "7. Transformers/7. Transformers (Research).md"
               }
             }
           },
@@ -164,8 +164,9 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "7b33ed036b66ad1e",
+  "active": "651abc467876da80",
   "lastOpenFiles": [
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "7. Transformers/7. Transformers (Research).md",
@@ -176,7 +177,6 @@
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "Orden de que hay que saber en orden.canvas",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "4. Regresor lineal/4. Regresor lineal (Research).md",

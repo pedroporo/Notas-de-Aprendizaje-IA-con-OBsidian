@@ -25,62 +25,10 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var main_exports = {};
 __export(main_exports, {
   VAULT_ROOT: () => VAULT_ROOT,
-  default: () => MathBooster3
+  default: () => LatexReferencer3
 });
 module.exports = __toCommonJS(main_exports);
-
-// node_modules/monkey-around/mjs/index.js
-function around(obj, factories) {
-  const removers = Object.keys(factories).map((key) => around1(obj, key, factories[key]));
-  return removers.length === 1 ? removers[0] : function() {
-    removers.forEach((r) => r());
-  };
-}
-function around1(obj, method, createWrapper) {
-  const original = obj[method], hadOwn = obj.hasOwnProperty(method);
-  let current = createWrapper(original);
-  if (original)
-    Object.setPrototypeOf(current, original);
-  Object.setPrototypeOf(wrapper, current);
-  obj[method] = wrapper;
-  return remove;
-  function wrapper(...args) {
-    if (current === original && obj[method] === wrapper)
-      remove();
-    return current.apply(this, args);
-  }
-  function remove() {
-    if (obj[method] === wrapper) {
-      if (hadOwn)
-        obj[method] = original;
-      else
-        delete obj[method];
-    }
-    if (current === original)
-      return;
-    current = original;
-    Object.setPrototypeOf(wrapper, original || Function);
-  }
-}
-
-// src/patches/page-preview.ts
-var patchPagePreview = (plugin) => {
-  const { app } = plugin;
-  plugin.register(
-    // @ts-ignore
-    around(app.internalPlugins.plugins["page-preview"].instance.constructor.prototype, {
-      onLinkHover(old) {
-        return function(parent, targetEl, linktext, ...args) {
-          old.call(this, parent, targetEl, linktext, ...args);
-          plugin.lastHoverLinktext = linktext;
-        };
-      }
-    })
-  );
-};
-
-// src/main.ts
-var import_obsidian34 = require("obsidian");
+var import_obsidian36 = require("obsidian");
 
 // node_modules/obsidian-mathlinks/lib/api/provider.js
 var import_obsidian2 = require("obsidian");
@@ -127,6 +75,17 @@ function update(app, file) {
     throw Error("MathLinks API: MathLinks is not enabled.");
   const mathlinks = app.plugins.plugins.mathlinks;
   mathlinks.update(file);
+}
+
+// node_modules/obsidian-quick-preview/lib/index.js
+function registerQuickPreview(app, component, suggestClass, itemNormalizer) {
+  app.workspace.onLayoutReady(() => {
+    const plugin = app.plugins.getPlugin("quick-preview");
+    if (!plugin)
+      throw Error("Quick Preview API: Quick Preview is not enabled.");
+    const uninstaller = plugin.patchSuggester(suggestClass, itemNormalizer);
+    component.register(uninstaller);
+  });
 }
 
 // src/settings/profile.ts
@@ -585,6 +544,7 @@ var DEFAULT_SETTINGS = {
   refFormat: "[type] [number] ([title])",
   noteMathLinkFormat: "[title] if title exists, [type] [number] otherwise",
   ignoreMainTheoremCalloutWithoutTitle: false,
+  numberOnlyReferencedEquations: true,
   inferEqNumberPrefix: true,
   inferEqNumberPrefixFromProperty: "",
   inferEqNumberPrefixRegExp: "^[0-9]+(\\.[0-9]+)*",
@@ -604,19 +564,24 @@ var DEFAULT_SETTINGS = {
 };
 var DEFAULT_EXTRA_SETTINGS = {
   foldDefault: "",
-  noteTitleInLink: true,
+  noteTitleInTheoremLink: true,
+  noteTitleInEquationLink: true,
   profiles: DEFAULT_PROFILES,
   showTheoremTitleinBuiltin: true,
+  showTheoremContentinBuiltin: false,
   renderEquationinBuiltin: true,
   triggerSuggest: "\\ref",
   triggerTheoremSuggest: "\\tref",
   triggerEquationSuggest: "\\eqref",
-  triggerSuggestActiveNote: "\\rea",
-  triggerTheoremSuggestActiveNote: "\\trea",
-  triggerEquationSuggestActiveNote: "\\eqrea",
-  triggerSuggestRecentNotes: "\\rer",
-  triggerTheoremSuggestRecentNotes: "\\trer",
-  triggerEquationSuggestRecentNotes: "\\eqrer",
+  triggerSuggestActiveNote: "\\ref:a",
+  triggerTheoremSuggestActiveNote: "\\tref:a",
+  triggerEquationSuggestActiveNote: "\\eqref:a",
+  triggerSuggestRecentNotes: "\\ref:r",
+  triggerTheoremSuggestRecentNotes: "\\tref:r",
+  triggerEquationSuggestRecentNotes: "\\eqref:r",
+  triggerSuggestDataview: "\\ref:d",
+  triggerTheoremSuggestDataview: "\\tref:d",
+  triggerEquationSuggestDataview: "\\eqref:d",
   enableSuggest: true,
   enableTheoremSuggest: true,
   enableEquationSuggest: true,
@@ -626,6 +591,9 @@ var DEFAULT_EXTRA_SETTINGS = {
   enableSuggestRecentNotes: true,
   enableTheoremSuggestRecentNotes: true,
   enableEquationSuggestRecentNotes: true,
+  enableSuggestDataview: true,
+  enableTheoremSuggestDataview: true,
+  enableEquationSuggestDataview: true,
   renderMathInSuggestion: true,
   suggestNumber: 20,
   searchMethod: "Fuzzy",
@@ -645,6 +613,7 @@ var DEFAULT_EXTRA_SETTINGS = {
   excludeExampleCallout: false,
   enableProof: true,
   enableMathPreviewInCalloutAndQuote: true,
+  autocompleteDvQuery: "",
   searchModalQueryType: "both",
   searchModalRange: "recent",
   searchModalDvQuery: ""
@@ -699,6 +668,13 @@ function rangeSetSome(set, predicate) {
 function hasOverlap(range1, range2) {
   return range1.from <= range2.to && range2.from <= range1.to;
 }
+function rangesHaveOverlap(ranges, from, to) {
+  for (const range of ranges) {
+    if (range.from <= to && range.to >= from)
+      return true;
+  }
+  return false;
+}
 
 // src/utils/obsidian.ts
 function iterDescendantFiles(file, callback) {
@@ -742,6 +718,10 @@ function isEqualToOrChildOf(file1, file2) {
       ancestor = ancestor.parent;
     }
   }
+}
+function getFile(app) {
+  var _a;
+  return (_a = app.workspace.getActiveFile()) != null ? _a : app.vault.getRoot();
 }
 function getSectionCacheFromPos(cache, pos, type) {
   if (cache.sections) {
@@ -1097,8 +1077,9 @@ var TheoremCalloutSettingsHelper = class {
     }, (_a = this.defaultSettings.fold) != null ? _a : this.plugin.extraSettings.foldDefault);
   }
 };
-var SettingsHelper = class {
+var SettingsHelper = class extends import_obsidian8.Component {
   constructor(contentEl, settings, defaultSettings, plugin, allowUnset, addClear) {
+    super();
     this.contentEl = contentEl;
     this.settings = settings;
     this.defaultSettings = defaultSettings;
@@ -1231,7 +1212,7 @@ var MathContextSettingsHelper = class extends SettingsHelper {
     super(contentEl, settings, defaultSettings, plugin, !isRoot, !isRoot);
     this.file = file;
   }
-  makeSettingPane() {
+  onload() {
     this.addHeading("Theorem callouts - general");
     this.addProfileSetting();
     const styleSetting = this.addDropdownSetting("theoremCalloutStyle", THEOREM_CALLOUT_STYLES, "Style", void 0, void 0, () => this.plugin.forceRerender());
@@ -1264,6 +1245,7 @@ var MathContextSettingsHelper = class extends SettingsHelper {
     );
     this.addToggleSetting("ignoreMainTheoremCalloutWithoutTitle", 'Ignore a "main" theorem callout without its own title');
     this.addHeading("Equations - numbering", ["equation-heading"]);
+    this.addToggleSetting("numberOnlyReferencedEquations", "Number only referenced equations");
     this.addToggleSetting(
       "inferEqNumberPrefix",
       "Infer prefix from note title or properties",
@@ -1282,7 +1264,10 @@ var MathContextSettingsHelper = class extends SettingsHelper {
     this.addHeading("Proofs (experimental)", ["proof-heading"]);
     this.addTextSetting("beginProof", "Beginning of a proof");
     this.addTextSetting("endProof", "End of a proof");
-    this.addHeading("Search & link auto-completion - general");
+    this.addHeading("Search & link auto-completion - general").then(async (setting) => {
+      setting.descEl.addClass("math-booster-new-feature");
+      await import_obsidian8.MarkdownRenderer.render(this.plugin.app, "**NOTE:** If you have the [**Quick Preview**](https://github.com/RyotaUshio/obsidian-quick-preview) plugin installed, holding down `Alt`/`Option` _(by default)_ will trigger a quick preview of the selected suggestion with the context around it.", setting.descEl, "", this);
+    });
     this.addToggleSetting("insertSpace", "Append whitespace after inserted link");
   }
   addProfileSetting(defaultValue) {
@@ -1295,7 +1280,7 @@ var MathContextSettingsHelper = class extends SettingsHelper {
   }
 };
 var ExtraSettingsHelper = class extends SettingsHelper {
-  makeSettingPane() {
+  onload() {
     this.settingRefs["foldDefault"] = addFoldOptionSetting(
       this.contentEl,
       'Default collapsibility when using the "Insert theorem callout" command',
@@ -1304,12 +1289,16 @@ var ExtraSettingsHelper = class extends SettingsHelper {
       },
       this.defaultSettings.foldDefault
     );
-    this.addToggleSetting("noteTitleInLink", "Show note title at link's head", 'If turned on, a link to "Theorem 1" will look like "Note title > Theorem 1." The same applies to equations.');
+    this.addToggleSetting("noteTitleInTheoremLink", "Show the note title at the head of a link to a theorem", 'If turned on, a link to "Theorem 1" will look like "Note title > Theorem 1".');
+    this.addToggleSetting("noteTitleInEquationLink", "Show the note title at the head of a link to an equation", 'If turned on, a link to "Eq.(1)" will look like "Note title > Eq.(1)".');
     this.addToggleSetting("excludeExampleCallout", `Don't treat "> [!example]" as a theorem callout`, `If turned on, a callout of the form "> [!example]" will be treated as Obsidian's built-in "Example" callout, and you will need to type "> [!exm]" instead to insert a theorem callout of "Example" type.`);
     this.addToggleSetting("showTheoremCalloutEditButton", "Show an edit button on a theorem callout");
     this.addToggleSetting("setOnlyTheoremAsMain", "If a note has only one theorem callout, automatically set it as main", `Regardless of this setting, putting "%% main %%" or "%% main: true %%" in a theorem callout will set it as main one of the note, which means any link to that note will be displayed with the theorem's title. Enabling this option implicitly sets a theorem callout as main when it's the only one in the note.`);
     this.addToggleSetting("setLabelInModal", "Show LaTeX/Pandoc label input form in theorem callout insert/edit modal");
-    this.addToggleSetting("enableMathPreviewInCalloutAndQuote", "Render equations inside callouts & add multi-line equation support to blockquotes", void 0, () => this.plugin.updateEditorExtensions());
+    this.addToggleSetting("enableMathPreviewInCalloutAndQuote", "Render equations inside callouts & add multi-line equation support to blockquotes", void 0, () => this.plugin.updateEditorExtensions()).then(async (setting) => {
+      setting.descEl.addClass("math-booster-new-feature");
+      await import_obsidian8.MarkdownRenderer.render(this.plugin.app, "**NOTE:** This feature is planned to be removed from this plugin, and instead, it will be available as a separate plugin [**Better Math in Callouts & Blockquotes**](https://github.com/RyotaUshio/obsidian-math-in-callout), featuring a bunch of improvements. Currently awaiting for approval by the Obsidian team.", setting.descEl, "", this);
+    });
     this.addToggleSetting("enableProof", "Enable proof environment", `For example, you can replace a pair of inline codes \`${DEFAULT_SETTINGS.beginProof}\` & \`${DEFAULT_SETTINGS.endProof}\` with "${DEFAULT_PROFILES[DEFAULT_SETTINGS.profile].body.proof.begin}" & "${DEFAULT_PROFILES[DEFAULT_SETTINGS.profile].body.proof.end}". You can style it with CSS snippets. See the documentation for the details.`, () => this.plugin.updateEditorExtensions());
     this.addSliderSetting("suggestNumber", { min: 1, max: 50, step: 1 }, "Number of suggestions", "Specify how many items are suggested at one time. Set it to a smaller value if you have a performance issue when equation suggestions with math rendering on.");
     this.addToggleSetting("renderMathInSuggestion", "Render math in equation suggestions", "Turn this off if you have a performance issue and reducing the number of suggestions doesn't fix it.");
@@ -1323,40 +1312,54 @@ var ExtraSettingsHelper = class extends SettingsHelper {
     list.createEl("li", { text: "Mod is Cmd on MacOS and Ctrl on other OS." });
     list.createEl("li", { text: "Meta is Cmd on MacOS and Win key on Windows." });
     this.addDropdownSetting("suggestLeafOption", LEAF_OPTIONS, "Opening option", "Specify how to open the selected suggestion.");
-    this.addHeading("Enhance Obsidian's built-in link completion (experimental)").setDesc(`Configure how Math Booster modifies the appearance of Obsidian's built-in link completion (the one that pops up when you type "[["). This feature dives deep into Obsidian's internals, so it might break when Obsidian is updated. If you encounter any issue, please report it on GitHub.`);
+    this.addHeading("Enhance Obsidian's built-in link auto-completion (experimental)").setDesc(`Configure how this plugin modifies the appearance of Obsidian's built-in link auto-completion (the one that pops up when you type "[["). This feature dives deep into Obsidian's internals, so it might break when Obsidian is updated. If you encounter any issue, please report it on GitHub.`);
     this.addToggleSetting("showTheoremTitleinBuiltin", "Show theorem title");
-    this.addToggleSetting("renderEquationinBuiltin", "Render equation");
-    this.addHeading("Configure Math Booster's editor link auto-completion").setDesc(`It is recommended to turn off unnecessary auto-completions to improve performance.`);
+    this.addToggleSetting("showTheoremContentinBuiltin", "Show theorem content", 'Only effective when "Show theorem title" is turned on.');
+    this.addToggleSetting("renderEquationinBuiltin", "Render equation").then(async (setting) => {
+      setting.descEl.addClass("math-booster-new-feature");
+      await import_obsidian8.MarkdownRenderer.render(this.plugin.app, "**NOTE:** This feature is planned to be removed from this plugin, and instead, it will be available as a separate plugin [**Rendered Block Link Suggestions**](https://github.com/RyotaUshio/obsidian-rendered-block-link-suggestions), which supports all types of blocks not limited to display math. Currently awaiting for approval by the Obsidian team.", setting.descEl, "", this);
+    });
+    this.addHeading("Configure this plugin's custom editor link auto-completion").setDesc(`It is recommended to turn off unnecessary auto-completions to improve performance.`);
+    this.addTextSetting("autocompleteDvQuery", "Dataview query for editor link auto-completion", "Only LIST queries are supported.");
     this.addHeading("Theorem & equation suggestion");
     this.addHeading("From entire vault", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableSuggest", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableSuggest", "Enable");
     this.addTextSetting("triggerSuggest", "Trigger");
     this.addHeading("From recently opened notes", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableSuggestRecentNotes", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableSuggestRecentNotes", "Enable");
     this.addTextSetting("triggerSuggestRecentNotes", "Trigger");
     this.addHeading("From active note", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableSuggestActiveNote", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableSuggestActiveNote", "Enable");
     this.addTextSetting("triggerSuggestActiveNote", "Trigger");
+    this.addHeading("From Dataview query", ["editor-suggest-setting-indented-heading"]);
+    this.addToggleSetting("enableSuggestDataview", "Enable");
+    this.addTextSetting("triggerSuggestDataview", "Trigger");
     this.addHeading("Theorem suggestion", ["editor-suggest-setting-heading"]);
     this.addHeading("From entire vault", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableTheoremSuggest", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableTheoremSuggest", "Enable");
     this.addTextSetting("triggerTheoremSuggest", "Trigger");
     this.addHeading("From recently opened notes", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableTheoremSuggestRecentNotes", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableTheoremSuggestRecentNotes", "Enable");
     this.addTextSetting("triggerTheoremSuggestRecentNotes", "Trigger");
     this.addHeading("From active note", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableTheoremSuggestActiveNote", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableTheoremSuggestActiveNote", "Enable");
     this.addTextSetting("triggerTheoremSuggestActiveNote", "Trigger");
+    this.addHeading("From Dataview query", ["editor-suggest-setting-indented-heading"]);
+    this.addToggleSetting("enableTheoremSuggestDataview", "Enable");
+    this.addTextSetting("triggerTheoremSuggestDataview", "Trigger");
     this.addHeading("Equation suggestion", ["editor-suggest-setting-heading"]);
     this.addHeading("From entire vault", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableEquationSuggest", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableEquationSuggest", "Enable");
     this.addTextSetting("triggerEquationSuggest", "Trigger");
     this.addHeading("From recently opened notes", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableEquationSuggestRecentNotes", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableEquationSuggestRecentNotes", "Enable");
     this.addTextSetting("triggerEquationSuggestRecentNotes", "Trigger");
     this.addHeading("From active note", ["editor-suggest-setting-indented-heading"]);
-    this.addToggleSetting("enableEquationSuggestActiveNote", "Enable", void 0, () => this.plugin.updateLinkAutocomplete());
+    this.addToggleSetting("enableEquationSuggestActiveNote", "Enable");
     this.addTextSetting("triggerEquationSuggestActiveNote", "Trigger");
+    this.addHeading("From Dataview query", ["editor-suggest-setting-indented-heading"]);
+    this.addToggleSetting("enableEquationSuggestDataview", "Enable");
+    this.addTextSetting("triggerEquationSuggestDataview", "Trigger");
     this.addHeading("Indexing");
     this.addSliderSetting("importerNumThreads", { min: 1, max: 10, step: 1 }, "Indexer threads", "The maximum number of thread used for indexing.");
     this.addSliderSetting("importerUtilization", { min: 0.1, max: 1, step: 0.01 }, "Indexer CPU utilization", "The CPU utilization that indexer threads should use.");
@@ -2000,12 +2003,12 @@ var _MarkdownBlock = class _MarkdownBlock {
 };
 _MarkdownBlock.TYPES = ["markdown", "block", LINKBEARING_TYPE];
 var MarkdownBlock = _MarkdownBlock;
-var MathBoosterBlock = class extends MarkdownBlock {
-  static isMathBoosterBlock(object) {
+var MathBlock = class extends MarkdownBlock {
+  static isMathBlock(object) {
     return object !== void 0 && object.$types.includes("block-math-booster");
   }
 };
-var _TheoremCalloutBlock = class _TheoremCalloutBlock extends MathBoosterBlock {
+var _TheoremCalloutBlock = class _TheoremCalloutBlock extends MathBlock {
   constructor(init) {
     super(init);
     this.$types = _TheoremCalloutBlock.TYPES;
@@ -2059,7 +2062,7 @@ var _TheoremCalloutBlock = class _TheoremCalloutBlock extends MathBoosterBlock {
 };
 _TheoremCalloutBlock.TYPES = ["markdown", "block", "block-math-booster", "block-theorem", LINKBEARING_TYPE];
 var TheoremCalloutBlock = _TheoremCalloutBlock;
-var _EquationBlock = class _EquationBlock extends MathBoosterBlock {
+var _EquationBlock = class _EquationBlock extends MathBlock {
   constructor(init) {
     super(init);
     this.$types = _EquationBlock.TYPES;
@@ -2118,19 +2121,6 @@ var FileIO = class {
     this.plugin = plugin;
     this.file = file;
   }
-  async getBlockTextFromID(blockID, cache) {
-    var _a, _b;
-    cache = (_a = cache != null ? cache : this.plugin.app.metadataCache.getFileCache(this.file)) != null ? _a : void 0;
-    if (cache) {
-      const sectionCache = (_b = cache.sections) == null ? void 0 : _b.find(
-        (sectionCache2) => sectionCache2.id == blockID
-      );
-      const position = sectionCache == null ? void 0 : sectionCache.position;
-      if (position) {
-        return await this.getRange(position);
-      }
-    }
-  }
 };
 var ActiveNoteIO = class extends FileIO {
   /**
@@ -2163,10 +2153,6 @@ var ActiveNoteIO = class extends FileIO {
     const text = this.editor.getRange(from, to);
     return text;
   }
-  isSafe(lineNumber) {
-    const cursorPos = this.editor.getCursor();
-    return cursorPos.line != lineNumber;
-  }
 };
 var NonActiveNoteIO = class extends FileIO {
   /**
@@ -2176,10 +2162,6 @@ var NonActiveNoteIO = class extends FileIO {
   constructor(plugin, file) {
     super(plugin, file);
     this._data = null;
-  }
-  async getData() {
-    var _a;
-    return (_a = this._data) != null ? _a : this._data = await this.plugin.app.vault.cachedRead(this.file);
   }
   async setLine(lineNumber, text) {
     this.plugin.app.vault.process(this.file, (data) => {
@@ -2208,9 +2190,6 @@ var NonActiveNoteIO = class extends FileIO {
   async getRange(position) {
     const content = await this.plugin.app.vault.cachedRead(this.file);
     return content.slice(position.start.offset, position.end.offset);
-  }
-  isSafe(lineNumber) {
-    return true;
   }
 };
 function getIO(plugin, file, activeMarkdownView) {
@@ -2346,6 +2325,15 @@ function isTheoremCallout(plugin, type) {
     return false;
   return THEOREM_LIKE_ENV_IDs.includes(type) || THEOREM_LIKE_ENV_PREFIXES.includes(type) || type === "math";
 }
+function insertProof(plugin, editor, context) {
+  var _a;
+  const settings = resolveSettings(void 0, plugin, (_a = context.file) != null ? _a : getFile(plugin.app));
+  const cursor = editor.getCursor();
+  editor.replaceRange(`\`${settings.beginProof}\`
+
+\`${settings.endProof}\``, cursor);
+  editor.setCursor({ line: cursor.line + 1, ch: 0 });
+}
 
 // src/settings/modals.ts
 var MathSettingModal = class extends import_obsidian12.Modal {
@@ -2427,10 +2415,12 @@ var ContextSettingModal = class extends MathSettingModal {
     super(app, plugin, callback);
     this.file = file;
     this.parent = parent;
+    this.component = new import_obsidian12.Component();
   }
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
+    this.component.load();
     this.titleEl.setText("Local settings for " + this.file.path);
     contentEl.createDiv({
       text: "If you want the change to apply to the entire vault, go to the plugin settings.",
@@ -2441,7 +2431,7 @@ var ContextSettingModal = class extends MathSettingModal {
     }
     const defaultSettings = this.file.parent ? resolveSettings(void 0, this.plugin, this.file.parent) : DEFAULT_SETTINGS;
     const contextSettingsHelper = new MathContextSettingsHelper(contentEl, this.plugin.settings[this.file.path], defaultSettings, this.plugin, this.file);
-    contextSettingsHelper.makeSettingPane();
+    this.component.addChild(contextSettingsHelper);
     this.addButton("Save");
   }
   onClose() {
@@ -2451,6 +2441,7 @@ var ContextSettingModal = class extends MathSettingModal {
     if (this.parent) {
       this.parent.open();
     }
+    this.component.unload();
   }
 };
 var FileSuggestModal = class extends import_obsidian12.FuzzySuggestModal {
@@ -2551,6 +2542,7 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
+    this.component = new import_obsidian14.Component();
   }
   addRestoreDefaultsButton() {
     new import_obsidian14.Setting(this.containerEl).addButton((btn) => {
@@ -2565,6 +2557,7 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
+    this.component.load();
     containerEl.createEl("h4", { text: "Global" });
     const root = this.app.vault.getRoot();
     const globalHelper = new MathContextSettingsHelper(
@@ -2574,7 +2567,7 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
       this.plugin,
       root
     );
-    globalHelper.makeSettingPane();
+    this.component.addChild(globalHelper);
     const extraHelper = new ExtraSettingsHelper(
       this.containerEl,
       this.plugin.extraSettings,
@@ -2583,7 +2576,7 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
       false,
       false
     );
-    extraHelper.makeSettingPane();
+    this.component.addChild(extraHelper);
     const heading = extraHelper.addHeading("Equations - general");
     const numberingHeading = this.containerEl.querySelector(".equation-heading");
     this.containerEl.insertBefore(
@@ -2618,9 +2611,13 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
       extraHelper.settingRefs.setLabelInModal.settingEl,
       globalHelper.settingRefs.labelPrefix.settingEl
     );
-    this.containerEl.insertBefore(
-      extraHelper.settingRefs.noteTitleInLink.settingEl,
-      globalHelper.settingRefs.noteMathLinkFormat.settingEl
+    this.containerEl.insertAfter(
+      extraHelper.settingRefs.noteTitleInTheoremLink.settingEl,
+      globalHelper.settingRefs.refFormat.settingEl
+    );
+    this.containerEl.insertAfter(
+      extraHelper.settingRefs.noteTitleInEquationLink.settingEl,
+      globalHelper.settingRefs.eqRefSuffix.settingEl
     );
     this.containerEl.insertBefore(
       globalHelper.settingRefs.insertSpace.settingEl,
@@ -2643,6 +2640,8 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
     super.hide();
     await this.plugin.saveSettings();
     this.plugin.indexManager.trigger("global-settings-updated");
+    this.plugin.updateLinkAutocomplete();
+    this.component.unload();
   }
 };
 
@@ -2650,6 +2649,7 @@ var MathSettingTab = class extends import_obsidian14.PluginSettingTab {
 var CleverefProvider = class extends Provider {
   constructor(mathLinks, plugin) {
     super(mathLinks);
+    this.plugin = plugin;
     this.app = plugin.app;
     this.index = plugin.indexManager.index;
   }
@@ -2668,11 +2668,11 @@ var CleverefProvider = class extends Provider {
       return null;
     if (targetSubpathResult.type === "block") {
       const block = page.$blocks.get(targetSubpathResult.block.id);
-      if (MathBoosterBlock.isMathBoosterBlock(block)) {
+      if (MathBlock.isMathBlock(block)) {
         if (block.$display)
-          return path ? processedPath + " > " + block.$display : block.$display;
+          return path && this.shouldShowNoteTitle(block) ? processedPath + " > " + block.$display : block.$display;
         if (block.$refName)
-          return path ? processedPath + " > " + block.$refName : block.$refName;
+          return path && this.shouldShowNoteTitle(block) ? processedPath + " > " + block.$refName : block.$refName;
       }
     } else {
       if (path && page.$refName) {
@@ -2680,6 +2680,13 @@ var CleverefProvider = class extends Provider {
       }
     }
     return null;
+  }
+  shouldShowNoteTitle(block) {
+    if (TheoremCalloutBlock.isTheoremCalloutBlock(block))
+      return this.plugin.extraSettings.noteTitleInTheoremLink;
+    if (EquationBlock.isEquationBlock(block))
+      return this.plugin.extraSettings.noteTitleInEquationLink;
+    return true;
   }
 };
 
@@ -2782,7 +2789,8 @@ function parseLatexComment(line) {
 
 // src/theorem-callouts/renderer.ts
 var createTheoremCalloutPostProcessor = (plugin) => async (element, context) => {
-  const file = plugin.app.vault.getAbstractFileByPath(context.sourcePath);
+  var _a;
+  const file = (_a = plugin.app.vault.getAbstractFileByPath(context.sourcePath)) != null ? _a : plugin.app.workspace.getActiveFile();
   if (!(file instanceof import_obsidian16.TFile))
     return null;
   const pdf = isPdfExport(element);
@@ -3014,7 +3022,7 @@ var TheoremCalloutRenderer = class _TheoremCalloutRenderer extends import_obsidi
   renderTitle(info, existingMainTitleEl) {
     const titleInner = this.containerEl.querySelector(".callout-title-inner");
     if (!titleInner)
-      throw Error(`Math Booster: Failed to find the title element of a theorem callout.`);
+      throw Error(`${this.plugin.manifest.name}: Failed to find the title element of a theorem callout.`);
     const newMainTitleEl = createSpan({
       text: info.theoremMainTitle,
       cls: "theorem-callout-main-title"
@@ -3199,18 +3207,31 @@ function getMathTextWithTag(equation, lineByLine) {
   return equation.$mathText;
 }
 function insertTagInMathText(text, tagContent, lineByLine) {
-  if (lineByLine) {
-    const alignResult = text.match(/^\s*\\begin\{align\}([\s\S]*)\\end\{align\}\s*$/);
-    if (alignResult) {
-      let alignContent = alignResult[1].split("\n").map((line) => parseLatexComment(line).nonComment).join("\n");
-      let index = 1;
-      alignContent = alignContent.split("\\\\").map(
-        (alignLine) => !alignLine.trim() || alignLine.contains("\\nonumber") ? alignLine : alignLine + `\\tag{${tagContent}-${index++}}`
-      ).join("\\\\");
-      return "\\begin{align}" + alignContent + "\\end{align}";
+  if (!lineByLine)
+    return text + `\\tag{${tagContent}}`;
+  const alignResult = text.match(/^\s*\\begin\{align\}([\s\S]*)\\end\{align\}\s*$/);
+  if (!alignResult)
+    return text + `\\tag{${tagContent}}`;
+  const envStack = [];
+  let alignContent = alignResult[1].split("\n").map((line) => parseLatexComment(line).nonComment).join("\n");
+  let index = 1;
+  alignContent = alignContent.split("\\\\").map((alignLine) => {
+    const pattern = /\\(?<which>begin|end)\{(?<env>.*?)\}/g;
+    let result;
+    while (result = pattern.exec(alignLine)) {
+      const { which, env } = result.groups;
+      if (which === "begin")
+        envStack.push(env);
+      else if (envStack.last() === env)
+        envStack.pop();
     }
-  }
-  return text + `\\tag{${tagContent}}`;
+    if (envStack.length || !alignLine.trim() || alignLine.contains("\\nonumber"))
+      return alignLine;
+    return alignLine + `\\tag{${tagContent}-${index++}}`;
+  }).join("\\\\");
+  if (index <= 2)
+    return text + `\\tag{${tagContent}}`;
+  return "\\begin{align}" + alignContent + "\\end{align}";
 }
 
 // src/equations/reading-view.ts
@@ -3231,8 +3252,8 @@ var createEquationNumberProcessor = (plugin) => async (el, ctx) => {
 function preprocessForPdfExport(plugin, el, ctx) {
   try {
     const topLevelMathDivs = el.querySelectorAll(':scope > div.math.math-block > mjx-container.MathJax[display="true"]');
-    const page = plugin.indexManager.index.load(ctx.sourcePath);
-    if (!MarkdownPage.isMarkdownPage(page)) {
+    const page = plugin.indexManager.index.getMarkdownPage(ctx.sourcePath);
+    if (!page) {
       new import_obsidian19.Notice(`${plugin.manifest.name}: Failed to fetch the metadata for PDF export; equation numbers will not be displayed in the exported PDF.`);
       return;
     }
@@ -3242,8 +3263,8 @@ function preprocessForPdfExport(plugin, el, ctx) {
         if (!EquationBlock.isEquationBlock(block))
           continue;
         const div = topLevelMathDivs[equationIndex++];
-        if (block.$printName && block.$blockId)
-          div.setAttribute("data-equation-block-id", block.$blockId);
+        if (block.$printName)
+          div.setAttribute("data-equation-id", block.$id);
       }
     }
     if (topLevelMathDivs.length != equationIndex) {
@@ -3275,20 +3296,10 @@ var EquationNumberRenderer = class extends import_obsidian19.MarkdownRenderChild
   getEquationCache(lineOffset = 0) {
     var _a;
     const info = this.context.getSectionInfo(this.containerEl);
-    const page = this.index.load(this.file.path);
-    if (!info || !MarkdownPage.isMarkdownPage(page))
+    const page = this.index.getMarkdownPage(this.file.path);
+    if (!info || !page)
       return null;
     const block = (_a = page.getBlockByLineNumber(info.lineStart + lineOffset)) != null ? _a : page.getBlockByLineNumber(info.lineEnd + lineOffset);
-    const id = block == null ? void 0 : block.$blockId;
-    if (id)
-      return this.getEquationCacheFromId(id);
-    return null;
-  }
-  getEquationCacheFromId(id) {
-    const page = this.plugin.indexManager.index.load(this.file.path);
-    if (!MarkdownPage.isMarkdownPage(page))
-      return null;
-    const block = page.$blocks.get(id);
     if (EquationBlock.isEquationBlock(block))
       return block;
     return null;
@@ -3300,8 +3311,8 @@ var EquationNumberRenderer = class extends import_obsidian19.MarkdownRenderChild
     (0, import_obsidian19.finishRenderMath)();
   }
   update() {
-    const id = this.containerEl.getAttribute("data-equation-block-id");
-    const equation = id ? this.getEquationCacheFromId(id) : this.getEquationCacheCaringHoverAndEmbed();
+    const id = this.containerEl.getAttribute("data-equation-id");
+    const equation = id ? this.index.getEquationBlock(id) : this.getEquationCacheCaringHoverAndEmbed();
     if (!equation)
       return;
     const settings = resolveSettings(void 0, this.plugin, this.file);
@@ -3368,6 +3379,8 @@ function createEquationNumberPlugin(plugin) {
     }
     updateFile(state) {
       this.file = state.field(import_obsidian21.editorInfoField).file;
+      if (this.file)
+        this.settings = resolveSettings(void 0, plugin, this.file);
     }
     async updatePage(file) {
       const page = index.load(file.path);
@@ -3394,8 +3407,13 @@ function createEquationNumberPlugin(plugin) {
       }
     }
     async updateEquationNumber(view, page) {
+      var _a, _b;
       const mjxContainerElements = view.contentDOM.querySelectorAll(':scope > .cm-embed-block.math > mjx-container.MathJax[display="true"]');
       for (const mjxContainerEl of mjxContainerElements) {
+        const mightBeClosingDollars = (_b = (_a = mjxContainerEl.parentElement) == null ? void 0 : _a.previousElementSibling) == null ? void 0 : _b.lastElementChild;
+        const isBeingEdited = mightBeClosingDollars == null ? void 0 : mightBeClosingDollars.matches("span.cm-formatting-math-end");
+        if (isBeingEdited)
+          continue;
         const pos = view.posAtDOM(mjxContainerEl);
         let block;
         try {
@@ -3423,7 +3441,7 @@ function createEquationNumberPlugin(plugin) {
 }
 
 // src/render-math-in-callouts.ts
-var import_obsidian22 = require("obsidian");
+var import_obsidian23 = require("obsidian");
 var import_state3 = require("@codemirror/state");
 var import_view3 = require("@codemirror/view");
 var import_language2 = require("@codemirror/language");
@@ -3431,6 +3449,7 @@ var import_language2 = require("@codemirror/language");
 // src/theorem-callouts/state-field.ts
 var import_state2 = require("@codemirror/state");
 var import_language = require("@codemirror/language");
+var import_obsidian22 = require("obsidian");
 var CALLOUT = /HyperMD-callout_HyperMD-quote_HyperMD-quote-([1-9][0-9]*)/;
 var TheoremCalloutInfo = class extends import_state2.RangeValue {
   constructor(index) {
@@ -3440,10 +3459,14 @@ var TheoremCalloutInfo = class extends import_state2.RangeValue {
 };
 var createTheoremCalloutsField = (plugin) => import_state2.StateField.define({
   create(state) {
+    if (!state.field(import_obsidian22.editorInfoField).file)
+      return import_state2.RangeSet.empty;
     const ranges = getTheoremCalloutInfos(plugin, state, state.doc, 0, 0);
     return import_state2.RangeSet.of(ranges);
   },
   update(value, tr) {
+    if (!tr.state.field(import_obsidian22.editorInfoField).file)
+      return import_state2.RangeSet.empty;
     if (!tr.docChanged)
       return value;
     let minChangedPosition = tr.newDoc.length - 1;
@@ -3527,7 +3550,7 @@ var MathPreviewWidget = class extends import_view3.WidgetType {
         }
       });
       cmEmbedBlockEl.appendChild(this.info.mathEl);
-      const editButton = new import_obsidian22.ExtraButtonComponent(cmEmbedBlockEl).setIcon("code-2").setTooltip("Edit this block");
+      const editButton = new import_obsidian23.ExtraButtonComponent(cmEmbedBlockEl).setIcon("code-2").setTooltip("Edit this block");
       editButton.extraSettingsEl.addEventListener("click", (ev) => {
         ev.stopPropagation();
         view.dispatch({ selection: { anchor: this.info.from + 2, head: this.info.to - 2 } });
@@ -3555,7 +3578,7 @@ var MathInfo = class extends import_state3.RangeValue {
     this.render();
   }
   async render() {
-    this.mathEl = (0, import_obsidian22.renderMath)(this.mathText, this.display);
+    this.mathEl = (0, import_obsidian23.renderMath)(this.mathText, this.display);
   }
   toWidget() {
     return new MathPreviewWidget(this);
@@ -3565,7 +3588,7 @@ var MathInfo = class extends import_state3.RangeValue {
       widget: this.toWidget(),
       block: this.display,
       side: which == "widget" ? 1 : void 0
-      // To fix https://github.com/RyotaUshio/obsidian-math-booster/issues/173
+      // To fix https://github.com/RyotaUshio/obsidian-latex-theorem-equation-referencer/issues/173
     });
   }
 };
@@ -3899,291 +3922,6 @@ var displayMathPreviewForQuote = import_view3.ViewPlugin.fromClass(
   }
 );
 
-// src/proof.ts
-var import_obsidian23 = require("obsidian");
-var import_state4 = require("@codemirror/state");
-var import_view4 = require("@codemirror/view");
-var import_language3 = require("@codemirror/language");
-var INLINE_CODE = "inline-code";
-var LINK_BEGIN = "formatting-link_formatting-link-start";
-var LINK = "hmd-internal-link";
-var LINK_END = "formatting-link_formatting-link-end";
-function makeProofClasses(which, profile) {
-  return [
-    "math-booster-" + which + "-proof",
-    ...profile.meta.tags.map((tag) => "math-booster-" + which + "-proof-" + tag)
-  ];
-}
-function makeProofElement(which, profile) {
-  return createSpan({
-    text: profile.body.proof[which],
-    cls: makeProofClasses(which, profile)
-  });
-}
-function parseAtSignLink(codeEl) {
-  const next = codeEl.nextSibling;
-  const afterNext = next == null ? void 0 : next.nextSibling;
-  const afterAfterNext = afterNext == null ? void 0 : afterNext.nextSibling;
-  if (afterNext) {
-    if (next.nodeType == Node.TEXT_NODE && next.textContent == "@" && afterNext instanceof HTMLElement && afterNext.matches("a.original-internal-link") && afterAfterNext instanceof HTMLElement && afterAfterNext.matches("a.mathLink-internal-link")) {
-      return { atSign: next, links: [afterNext, afterAfterNext] };
-    }
-  }
-}
-var ProofRenderer = class extends import_obsidian23.MarkdownRenderChild {
-  constructor(app, plugin, containerEl, which, file, display) {
-    super(containerEl);
-    this.app = app;
-    this.plugin = plugin;
-    this.which = which;
-    this.file = file;
-    this.display = display;
-    this.atSignParseResult = parseAtSignLink(this.containerEl);
-  }
-  onload() {
-    this.update();
-    this.registerEvent(
-      this.plugin.indexManager.on("local-settings-updated", (file) => {
-        if (file == this.file) {
-          this.update();
-        }
-      })
-    );
-    this.registerEvent(
-      this.plugin.indexManager.on("global-settings-updated", () => {
-        this.update();
-      })
-    );
-  }
-  update() {
-    const settings = resolveSettings(void 0, this.plugin, this.file);
-    const profile = this.plugin.extraSettings.profiles[settings.profile];
-    if (this.atSignParseResult) {
-      const { atSign, links } = this.atSignParseResult;
-      const newEl2 = createSpan({ cls: makeProofClasses(this.which, profile) });
-      newEl2.replaceChildren(profile.body.proof.linkedBeginPrefix, ...links, profile.body.proof.linkedBeginSuffix);
-      this.containerEl.replaceWith(newEl2);
-      this.containerEl = newEl2;
-      atSign.textContent = "";
-      return;
-    }
-    if (this.display) {
-      this.renderDisplay(profile);
-      return;
-    }
-    const newEl = makeProofElement(this.which, profile);
-    this.containerEl.replaceWith(newEl);
-    this.containerEl = newEl;
-  }
-  async renderDisplay(profile) {
-    if (this.display) {
-      const children = await renderMarkdown(this.display, this.file.path, this.plugin);
-      if (children) {
-        const el = createSpan({ cls: makeProofClasses(this.which, profile) });
-        el.replaceChildren(...children);
-        this.containerEl.replaceWith(el);
-        this.containerEl = el;
-      }
-    }
-  }
-};
-var createProofProcessor = (plugin) => (element, context) => {
-  if (!plugin.extraSettings.enableProof)
-    return;
-  const { app } = plugin;
-  const file = app.vault.getAbstractFileByPath(context.sourcePath);
-  if (!(file instanceof import_obsidian23.TFile))
-    return;
-  const settings = resolveSettings(void 0, plugin, file);
-  const codes = element.querySelectorAll("code");
-  for (const code of codes) {
-    const text = code.textContent;
-    if (!text)
-      continue;
-    if (text.startsWith(settings.beginProof)) {
-      const rest = text.slice(settings.beginProof.length);
-      let displayMatch;
-      if (!rest) {
-        context.addChild(new ProofRenderer(app, plugin, code, "begin", file));
-      } else if (displayMatch = rest.match(/^\[(.*)\]$/)) {
-        const display = displayMatch[1];
-        context.addChild(new ProofRenderer(app, plugin, code, "begin", file, display));
-      }
-    } else if (code.textContent == settings.endProof) {
-      context.addChild(new ProofRenderer(app, plugin, code, "end", file));
-    }
-  }
-};
-var ProofWidget = class _ProofWidget extends import_view4.WidgetType {
-  constructor(which, pos, profile, sourcePath, plugin) {
-    super();
-    this.which = which;
-    this.pos = pos;
-    this.profile = profile;
-    this.sourcePath = sourcePath;
-    this.plugin = plugin;
-  }
-  toDOM(view) {
-    if (this.which == "begin" && this.sourcePath && this.plugin) {
-      const el = createSpan({ cls: makeProofClasses(this.which, this.profile) });
-      const display = this.pos.linktext ? `${this.profile.body.proof.linkedBeginPrefix} [[${this.pos.linktext}]]${this.profile.body.proof.linkedBeginSuffix}` : this.pos.display;
-      if (display) {
-        _ProofWidget.renderDisplay(el, display, this.sourcePath, this.plugin);
-        return el;
-      }
-    }
-    return makeProofElement(this.which, this.profile);
-  }
-  static async renderDisplay(el, display, sourcePath, plugin) {
-    const children = await renderMarkdown(display, sourcePath, plugin);
-    if (children) {
-      el.replaceChildren(...children);
-    }
-  }
-  ignoreEvent(event) {
-    return false;
-  }
-};
-var proofPositionFieldFactory = (plugin) => import_state4.StateField.define({
-  create(state) {
-    return makeField(state, plugin);
-  },
-  update(value, tr) {
-    if (!tr.docChanged) {
-      return value;
-    }
-    return makeField(tr.state, plugin);
-  }
-});
-function makeField(state, plugin) {
-  const file = state.field(import_obsidian23.editorInfoField).file;
-  if (!file)
-    return [];
-  const settings = resolveSettings(void 0, plugin, file);
-  const field = [];
-  const tree = (0, import_language3.syntaxTree)(state);
-  let begin;
-  let end;
-  let display;
-  let displayMatch;
-  let linktext;
-  let linknodes;
-  tree.iterate({
-    enter(node) {
-      var _a, _b, _c, _d, _e, _f;
-      if (node.name == INLINE_CODE) {
-        const text = nodeText(node, state);
-        if (text.startsWith(settings.beginProof)) {
-          const rest = text.slice(settings.beginProof.length);
-          if (!rest) {
-            begin = { from: node.from - 1, to: node.to + 1 };
-          } else if (displayMatch = rest.match(/^\[(.*)\]$/)) {
-            display = displayMatch[1];
-            begin = { from: node.from - 1, to: node.to + 1 };
-          }
-          if (begin && state.sliceDoc(node.to + 1, node.to + 2) == "@") {
-            const next = (_a = node.node.nextSibling) == null ? void 0 : _a.nextSibling;
-            const afterNext = (_c = (_b = node.node.nextSibling) == null ? void 0 : _b.nextSibling) == null ? void 0 : _c.nextSibling;
-            const afterAfterNext = (_f = (_e = (_d = node.node.nextSibling) == null ? void 0 : _d.nextSibling) == null ? void 0 : _e.nextSibling) == null ? void 0 : _f.nextSibling;
-            if ((next == null ? void 0 : next.name) == LINK_BEGIN && (afterNext == null ? void 0 : afterNext.name) == LINK && (afterAfterNext == null ? void 0 : afterAfterNext.name) == LINK_END) {
-              linktext = nodeText(afterNext, state);
-              linknodes = { linkBegin: next, link: afterNext, linkEnd: afterAfterNext };
-            }
-          }
-        } else if (text == settings.endProof) {
-          if (begin) {
-            end = { from: node.from - 1, to: node.to + 1 };
-            field.push({ begin, end, display, linktext, linknodes });
-          }
-          begin = void 0;
-          end = void 0;
-          display = void 0;
-          linktext = void 0;
-          linknodes = void 0;
-        }
-      }
-    }
-  });
-  return field;
-}
-var proofDecorationFactory = (plugin) => import_view4.ViewPlugin.fromClass(
-  class {
-    constructor(view) {
-      this.impl(view);
-    }
-    update(update2) {
-      this.impl(update2.view);
-    }
-    impl(view) {
-      const file = view.state.field(import_obsidian23.editorInfoField).file;
-      if (!file) {
-        this.decorations = import_view4.Decoration.none;
-        return;
-      }
-      const settings = resolveSettings(void 0, plugin, file);
-      const profile = plugin.extraSettings.profiles[settings.profile];
-      const builder = new import_state4.RangeSetBuilder();
-      const range = view.state.selection.main;
-      const positions = view.state.field(plugin.proofPositionField);
-      for (const pos of positions) {
-        if (pos.begin) {
-          if (pos.linktext && pos.linknodes) {
-            if (!hasOverlap({ from: pos.begin.from, to: pos.linknodes.linkEnd.to }, range)) {
-              builder.add(
-                pos.begin.from,
-                pos.linknodes.linkEnd.to,
-                import_view4.Decoration.replace({
-                  widget: new ProofWidget("begin", pos, profile, file.path, plugin)
-                })
-              );
-            }
-          } else if (!hasOverlap(pos.begin, range)) {
-            builder.add(
-              pos.begin.from,
-              pos.begin.to,
-              import_view4.Decoration.replace({
-                widget: new ProofWidget("begin", pos, profile, file.path, plugin)
-              })
-            );
-          }
-        }
-        if (pos.end && !hasOverlap(pos.end, range)) {
-          builder.add(
-            pos.end.from,
-            pos.end.to,
-            import_view4.Decoration.replace({
-              widget: new ProofWidget("end", pos, profile)
-            })
-          );
-        }
-      }
-      this.decorations = builder.finish();
-    }
-  },
-  {
-    decorations: (instance) => instance.decorations
-  }
-);
-var proofFoldFactory = (plugin) => import_language3.foldService.of((state, lineStart, lineEnd) => {
-  const positions = state.field(plugin.proofPositionField);
-  for (const pos of positions) {
-    if (pos.begin && pos.end && lineStart <= pos.begin.from && pos.begin.to <= lineEnd) {
-      return { from: pos.begin.to, to: pos.end.to };
-    }
-  }
-  return null;
-});
-function insertProof(plugin, editor, context) {
-  if (context.file) {
-    const settings = resolveSettings(void 0, plugin, context.file);
-    const cursor = editor.getCursor();
-    editor.replaceRange(`\`${settings.beginProof}\`
-
-\`${settings.endProof}\``, cursor);
-    editor.setCursor({ line: cursor.line + 1, ch: 0 });
-  }
-}
-
 // src/index/manager.ts
 var import_obsidian25 = require("obsidian");
 
@@ -4459,7 +4197,7 @@ var _InvertedIndex = class _InvertedIndex {
 _InvertedIndex.EMPTY_SET = /* @__PURE__ */ new Set();
 var InvertedIndex = _InvertedIndex;
 
-// src/index/index.ts
+// src/index/math-index.ts
 var MathIndex = class {
   /** Tracks the existence of fields (indexed by normalized key name). */
   // private fields: Map<string, FieldIndex>; // irrelevant because we are not going to search/query
@@ -4621,7 +4359,7 @@ var MathIndex = class {
         let refName = null;
         if (block.$manualTag) {
           printName = `(${block.$manualTag})`;
-        } else if (block.$link && this.isLinked(block)) {
+        } else if (!settings.numberOnlyReferencedEquations || block.$link && this.isLinked(block)) {
           block.$index = equationCount;
           printName = "(" + eqPrefix + CONVERTER[settings.eqNumberStyle](equationNumberInit + equationCount) + eqSuffix + ")";
           equationCount++;
@@ -4663,6 +4401,18 @@ var MathIndex = class {
   }
   getByType(type) {
     return this.types.get(type);
+  }
+  getMarkdownPage(path) {
+    const page = this.load(path);
+    return MarkdownPage.isMarkdownPage(page) ? page : null;
+  }
+  getTheoremCalloutBlock(id) {
+    const block = this.load(id);
+    return TheoremCalloutBlock.isTheoremCalloutBlock(block) ? block : null;
+  }
+  getEquationBlock(id) {
+    const block = this.load(id);
+    return EquationBlock.isEquationBlock(block) ? block : null;
   }
 };
 function iterableExists(object, key) {
@@ -4739,7 +4489,7 @@ var MathIndexManager = class extends import_obsidian25.Component {
       this.removeChild(init);
       const durationSecs = (stats.durationMs / 1e3).toFixed(3);
       console.log(
-        `Math Booster: Imported all theorems and equations in the vault in ${durationSecs}s (${stats.imported} notes imported, ${stats.skipped} notes skipped).`
+        `${this.plugin.manifest.name}: Imported all theorems and equations in the vault in ${durationSecs}s (${stats.imported} notes imported, ${stats.skipped} notes skipped).`
       );
       this.index.touch();
       this.trigger("update", this.revision);
@@ -4924,7 +4674,7 @@ var _MathIndexInitializer = class _MathIndexInitializer extends import_obsidian2
       await this.manager.reload(file);
       return { status: "imported" };
     } catch (ex) {
-      console.log("Math Booster: Failed to import file: ", ex);
+      console.log(`${this.manager.plugin.manifest.name}: Failed to import file: `, ex);
       return { status: "skipped" };
     }
   }
@@ -4935,6 +4685,42 @@ var MathIndexInitializer = _MathIndexInitializer;
 
 // src/notice.ts
 var import_obsidian27 = require("obsidian");
+var RenameNoticeModal = class extends import_obsidian27.Modal {
+  constructor(plugin) {
+    super(plugin.app);
+    this.plugin = plugin;
+    this.component = new import_obsidian27.Component();
+  }
+  onOpen() {
+    this.plugin.addChild(this.component);
+    const { contentEl, titleEl } = this;
+    contentEl.empty();
+    titleEl.setText("Math Booster has been renamed");
+    import_obsidian27.MarkdownRenderer.render(
+      this.app,
+      `Starting from version 2.2.0, Math Booster has been renamed to ***LaTeX-like Theorem & Equation Referencer*** for better clarity and discoverability.
+
+While the display name in the community plugin browser may still reflect the previous version, it will be updated shortly.
+
+A big thank you for those who shared their ideas [here](https://github.com/RyotaUshio/obsidian-math-booster/issues/210)!
+
+> [!warning]
+> If you have custom CSS snippets with CSS classes <code>.math-booster-&#42</code>, don't worry, they still work!
+> 
+> But I do recommend you to replace them with <code>.latex-referencer-&#42</code> as the old class names might be removed in the future.`,
+      contentEl,
+      "",
+      this.component
+    );
+    new import_obsidian27.Setting(contentEl).addButton((button) => {
+      button.setCta().setButtonText("Okay, I got it").onClick(() => this.close());
+    }).then((setting) => setting.settingEl.style.border = "none");
+  }
+  onClose() {
+    this.contentEl.empty();
+    this.component.unload();
+  }
+};
 var DependencyNotificationModal = class extends import_obsidian27.Modal {
   constructor(plugin, dependenciesOK, v1) {
     super(plugin.app);
@@ -4942,9 +4728,9 @@ var DependencyNotificationModal = class extends import_obsidian27.Modal {
     this.dependenciesOK = dependenciesOK;
     this.v1 = v1;
     this.component = new import_obsidian27.Component();
-    this.plugin.addChild(this.component);
   }
   async onOpen() {
+    this.plugin.addChild(this.component);
     const { contentEl, titleEl } = this;
     contentEl.empty();
     titleEl.setText(`${this.plugin.manifest.name} ${this.plugin.manifest.version}`);
@@ -4979,9 +4765,9 @@ var DependencyNotificationModal = class extends import_obsidian27.Modal {
     this.contentEl.createEl("h3", { text: "Migration from version 1" });
     import_obsidian27.MarkdownRenderer.render(
       this.app,
-      `Math Booster introduces a [new format for theorem callouts](https://ryotaushio.github.io/obsidian-math-booster/theorem-callouts/theorem-callouts.html). 
+      `LaTeX-like Theorem & Equation Referencer (formerly called Math Booster) version 2 introduces a [new format for theorem callouts](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/theorem-callouts/theorem-callouts.html). 
 
-To fully enjoy Math Booster v2, click the button below to convert the old theorem format to the new one. Alternatively, you can do it later by running the command "Migrate from version 1".`,
+To fully enjoy version 2, click the button below to convert the old theorem format to the new one. Alternatively, you can do it later by running the command "Migrate from version 1".`,
       this.contentEl.createDiv(),
       "",
       this.component
@@ -4997,7 +4783,7 @@ To fully enjoy Math Booster v2, click the button below to convert the old theore
       this.app,
       `### What's new in version 2
 
-- [New format for theorem callouts](https://ryotaushio.github.io/obsidian-math-booster/theorem-callouts/theorem-callouts.html):
+- [New format for theorem callouts](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/theorem-callouts/theorem-callouts.html):
     -   *much cleaner*,
     -   *more intuitive*,
     -   *more keyboard-friendly*,
@@ -5005,11 +4791,11 @@ To fully enjoy Math Booster v2, click the button below to convert the old theore
 -   New indexing mechanism:
     -   no longer blocks UI
     -   no longer hard-codes theorem indices in notes directly
--   [Enhancing Obsidian's built-in link completion](https://ryotaushio.github.io/obsidian-math-booster/search-&-link-auto-completion/enhancing-obsidian's-built-in-link-completion.html): now equations are rendered in the built-in completion as well.
--   [Custom link completion](https://ryotaushio.github.io/obsidian-math-booster/search-&-link-auto-completion/custom-link-completion.html) improvements: filter theorems & equations (*entire vault/recent notes/active note*)
--   [Search modal](https://ryotaushio.github.io/obsidian-math-booster/search-&-link-auto-completion/search-modal.html): more control & flexibility than editor auto-completion, including *Dataview queries*
--   Adding metadata to [theorems](https://ryotaushio.github.io/obsidian-math-booster/theorem-callouts/theorem-callouts.html) and [equations](https://ryotaushio.github.io/obsidian-math-booster/equations.html) with comments
-- Theorem numbers and [equation numbers](https://ryotaushio.github.io/obsidian-math-booster/equations.html) now can be displayed *almost everywhere*:
+-   [Enhancing Obsidian's built-in link autocomplete](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/search-&-link-autocomplete/enhancing-obsidian's-built-in-link-autocomplete.html): now equations are rendered in the built-in autocomplete as well.
+-   [Custom link autocomplete](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/search-&-link-autocomplete/custom-link-autocomplete.html) improvements: filter theorems & equations (*entire vault/recent notes/active note*)
+-   [Search modal](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/search-&-link-autocomplete/search-modal.html): more control & flexibility than editor autocomplete, including *Dataview queries*
+-   Adding metadata to [theorems](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/theorem-callouts/theorem-callouts.html) and [equations](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/equations.html) with comments
+- Theorem numbers and [equation numbers](https://ryotaushio.github.io/obsidian-latex-theorem-equation-referencer/equations.html) now can be displayed *almost everywhere*:
         
 ##### Version 1:
 
@@ -5033,9 +4819,9 @@ To fully enjoy Math Booster v2, click the button below to convert the old theore
 
 ### No longer supported
 
-- ["Show backlinks" right-click menu](https://github.com/RyotaUshio/obsidian-math-booster/blob/1.0.4/docs/backlinks.md)
+- ["Show backlinks" right-click menu](https://github.com/RyotaUshio/obsidian-latex-theorem-equation-referencer/blob/1.0.4/docs/backlinks.md)
     - Use [Strange New Worlds](https://github.com/TfTHacker/obsidian42-strange-new-worlds) instead.
-- [Projects](https://github.com/RyotaUshio/obsidian-math-booster/blob/1.0.4/docs/projects.md)
+- [Projects](https://github.com/RyotaUshio/obsidian-latex-theorem-equation-referencer/blob/1.0.4/docs/projects.md)
     - might be supported later with some improvements
 
 `,
@@ -5067,7 +4853,7 @@ var MigrationModal = class extends import_obsidian27.Modal {
     await import_obsidian27.MarkdownRenderer.render(
       this.app,
       `
-In order to enjoy Math Booster v2, you need to convert the old theorem format:
+In order to enjoy LaTeX-like Theorem & Equation Referencer, you need to convert the old theorem format from Math Booster version 1:
 
 \`\`\`md
 > [!math|{"type":"theorem","number":"auto","title":"Main result","label":"main-result","_index":0}] Theorem 1 (Main result).
@@ -5140,55 +4926,14 @@ to the new format:
 };
 
 // src/search/editor-suggest.ts
-var import_obsidian29 = require("obsidian");
-var LinkAutocomplete = class extends import_obsidian29.EditorSuggest {
-  /**
-   * @param type The type of the block to search for. See: index/typings/markdown.ts
-   */
-  constructor(plugin, triggerGetter, coreCreator) {
-    super(plugin.app);
-    this.plugin = plugin;
-    this.triggerGetter = triggerGetter;
-    this.core = coreCreator(this);
-    this.core.setScope();
-  }
-  getContext() {
-    return this.context;
-  }
-  getSelectedItem() {
-    return this.suggestions.values[this.suggestions.selectedItem];
-  }
-  onTrigger(cursor, editor) {
-    const trigger = this.triggerGetter();
-    const text = editor.getLine(cursor.line);
-    const index = text.lastIndexOf(trigger);
-    if (index < 0)
-      return null;
-    const query = text.slice(index + trigger.length);
-    this.limit = this.plugin.extraSettings.suggestNumber;
-    return !query.startsWith("[[") ? {
-      start: { line: cursor.line, ch: index },
-      end: cursor,
-      query
-    } : null;
-  }
-  getSuggestions(context) {
-    return this.core.getSuggestions(context.query);
-  }
-  renderSuggestion(block, el) {
-    this.core.renderSuggestion(block, el);
-  }
-  selectSuggestion(item, evt) {
-    this.core.selectSuggestion(item, evt);
-  }
-};
+var import_obsidian32 = require("obsidian");
 
 // src/search/core.ts
-var import_obsidian31 = require("obsidian");
+var import_obsidian30 = require("obsidian");
 
 // src/search/modal.ts
-var import_obsidian30 = require("obsidian");
-var MathSearchModal = class extends import_obsidian30.SuggestModal {
+var import_obsidian29 = require("obsidian");
+var MathSearchModal = class extends import_obsidian29.SuggestModal {
   constructor(plugin) {
     super(plugin.app);
     this.plugin = plugin;
@@ -5202,7 +4947,7 @@ var MathSearchModal = class extends import_obsidian30.SuggestModal {
     this.modalEl.insertBefore(this.topEl, this.modalEl.firstChild);
     this.inputEl.addClass("math-booster-search-input");
     this.limit = this.plugin.extraSettings.suggestNumber;
-    new import_obsidian30.Setting(this.topEl).setName("Query type").addDropdown((dropdown) => {
+    new import_obsidian29.Setting(this.topEl).setName("Query type").addDropdown((dropdown) => {
       dropdown.addOption("both", "Theorems and equations").addOption("theorem", "Theorems").addOption("equation", "Equations");
       dropdown.setValue(this.plugin.extraSettings.searchModalQueryType);
       dropdown.onChange((value) => {
@@ -5213,7 +4958,7 @@ var MathSearchModal = class extends import_obsidian30.SuggestModal {
         this.plugin.saveSettings();
       });
     });
-    new import_obsidian30.Setting(this.topEl).setName("Search range").addDropdown((dropdown) => {
+    new import_obsidian29.Setting(this.topEl).setName("Search range").addDropdown((dropdown) => {
       dropdown.addOption("vault", "Vault").addOption("recent", "Recent notes").addOption("active", "Active note").addOption("dataview", "Dataview query");
       dropdown.setValue(this.plugin.extraSettings.searchModalRange);
       dropdown.onChange((value) => {
@@ -5224,7 +4969,7 @@ var MathSearchModal = class extends import_obsidian30.SuggestModal {
         this.plugin.saveSettings();
       });
     });
-    this.dvQueryField = new import_obsidian30.Setting(this.topEl).setName("Dataview query").setDesc("Only LIST query is supported.").then((setting) => {
+    this.dvQueryField = new import_obsidian29.Setting(this.topEl).setName("Dataview query").setDesc("Only LIST queries are supported.").then((setting) => {
       setting.controlEl.style.width = "60%";
     }).addTextArea((text) => {
       text.inputEl.addClass("math-booster-dv-query");
@@ -5242,34 +4987,23 @@ var MathSearchModal = class extends import_obsidian30.SuggestModal {
     this.resetCore();
   }
   resetCore() {
-    var _a;
+    const core = MathSearchCore.getCore(this);
+    if (core)
+      this.core = core;
     if (this.range === "dataview") {
-      const dv = (_a = this.app.plugins.plugins.dataview) == null ? void 0 : _a.api;
-      if (!dv) {
+      if (!core) {
         this.dvQueryField.setDisabled(true);
         this.dvQueryField.setDesc("Retry after enabling Dataview.").then((setting) => setting.descEl.style.color = "#ea5555");
-        this.dvQueryField.settingEl.show();
-        return;
       }
-      this.core = new DataviewQuerySearchCore(this, this.queryType, dv, this.dvQueryField.components[0].getValue());
       this.dvQueryField.settingEl.show();
-      return;
-    }
-    this.dvQueryField.settingEl.hide();
-    if (this.range === "vault") {
-      if (this.queryType === "both")
-        this.core = new WholeVaultTheoremEquationSearchCore(this);
-      else if (this.queryType === "theorem")
-        this.core = new WholeVaultTheoremSearchCore(this);
-      else if (this.queryType === "equation")
-        this.core = new WholeVaultEquationSearchCore(this);
-    } else if (this.range === "recent")
-      this.core = new RecentNotesSearchCore(this, this.queryType);
-    else if (this.range === "active")
-      this.core = new ActiveNoteSearchCore(this, this.queryType);
+    } else
+      this.dvQueryField.settingEl.hide();
+  }
+  get dvQuery() {
+    return this.dvQueryField.components[0].getValue();
   }
   getContext() {
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian30.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian29.MarkdownView);
     if (!(view == null ? void 0 : view.file))
       return null;
     const start = view.editor.getCursor("from");
@@ -5277,8 +5011,6 @@ var MathSearchModal = class extends import_obsidian30.SuggestModal {
     return { file: view.file, editor: view.editor, start, end };
   }
   getSelectedItem() {
-    if (!this.chooser.values)
-      throw Error("Math Booster: chooser is not ready.");
     return this.chooser.values[this.chooser.selectedItem];
   }
   getSuggestions(query) {
@@ -5301,6 +5033,28 @@ var MathSearchCore = class {
     this.index = this.plugin.indexManager.index;
     this.scope = parent.scope;
   }
+  static getCore(parent) {
+    var _a;
+    const { app, range, queryType, dvQuery } = parent;
+    if (range === "dataview") {
+      const dv = (_a = app.plugins.plugins.dataview) == null ? void 0 : _a.api;
+      if (!dv)
+        return null;
+      return new DataviewQuerySearchCore(parent, queryType, dv, dvQuery);
+    }
+    if (range === "vault") {
+      if (queryType === "both")
+        return new WholeVaultTheoremEquationSearchCore(parent);
+      else if (queryType === "theorem")
+        return new WholeVaultTheoremSearchCore(parent);
+      else if (queryType === "equation")
+        return new WholeVaultEquationSearchCore(parent);
+    } else if (range === "recent")
+      return new RecentNotesSearchCore(parent, queryType);
+    else if (range === "active")
+      return new ActiveNoteSearchCore(parent, queryType);
+    return null;
+  }
   setScope() {
     this.scope.register([this.plugin.extraSettings.modifierToJump], "Enter", () => {
       const context = this.parent.getContext();
@@ -5310,7 +5064,7 @@ var MathSearchCore = class {
       }
       const item = this.parent.getSelectedItem();
       const file = this.app.vault.getAbstractFileByPath(item.$file);
-      if (!(file instanceof import_obsidian31.TFile))
+      if (!(file instanceof import_obsidian30.TFile))
         return;
       openFileAndSelectPosition(this.app, file, item.$pos, ...LEAF_OPTION_TO_ARGS[this.plugin.extraSettings.suggestLeafOption]);
       if (this.parent instanceof MathSearchModal)
@@ -5337,14 +5091,14 @@ var MathSearchCore = class {
     const ids = await this.getUnsortedSuggestions();
     const results = this.gradeSuggestions(ids, query);
     this.postProcessResults(results);
-    (0, import_obsidian31.sortSearchResults)(results);
+    (0, import_obsidian30.sortSearchResults)(results);
     return results.map((result) => result.block);
   }
   postProcessResults(results) {
   }
   gradeSuggestions(ids, query) {
     var _a;
-    const callback = (this.plugin.extraSettings.searchMethod == "Fuzzy" ? import_obsidian31.prepareFuzzySearch : import_obsidian31.prepareSimpleSearch)(query);
+    const callback = (this.plugin.extraSettings.searchMethod == "Fuzzy" ? import_obsidian30.prepareFuzzySearch : import_obsidian30.prepareSimpleSearch)(query);
     const results = [];
     for (const id of ids) {
       const block = this.index.load(id);
@@ -5353,7 +5107,7 @@ var MathSearchCore = class {
         text += ` ${block.$settings.type}`;
         if (this.plugin.extraSettings.searchLabel) {
           const file = this.app.vault.getAbstractFileByPath(block.$file);
-          if (file instanceof import_obsidian31.TFile) {
+          if (file instanceof import_obsidian30.TFile) {
             const resolvedSettings = resolveSettings(block.$settings, this.plugin, file);
             text += ` ${(_a = formatLabel(resolvedSettings)) != null ? _a : ""}`;
           }
@@ -5371,7 +5125,8 @@ var MathSearchCore = class {
   renderSuggestion(block, el) {
     const baseEl = el.createDiv({ cls: "math-booster-search-item" });
     if (block.$printName) {
-      baseEl.createDiv({ text: block.$printName });
+      const children = renderTextWithMath(block.$printName);
+      baseEl.createDiv().replaceChildren(...children);
     }
     const smallEl = baseEl.createEl(
       "small",
@@ -5382,7 +5137,7 @@ var MathSearchCore = class {
     );
     if (block.$type === "equation") {
       if (this.plugin.extraSettings.renderMathInSuggestion) {
-        const mjxContainerEl = (0, import_obsidian31.renderMath)(block.$mathText, true);
+        const mjxContainerEl = (0, import_obsidian30.renderMath)(block.$mathText, true);
         baseEl.insertBefore(mjxContainerEl, smallEl);
       } else {
         const mathTextEl = createDiv({ text: block.$mathText });
@@ -5392,7 +5147,7 @@ var MathSearchCore = class {
   }
   selectSuggestion(item, evt) {
     this.selectSuggestionImpl(item, false);
-    (0, import_obsidian31.finishRenderMath)();
+    (0, import_obsidian30.finishRenderMath)();
   }
   async selectSuggestionImpl(block, insertNoteLink) {
     const context = this.parent.getContext();
@@ -5400,7 +5155,7 @@ var MathSearchCore = class {
       return;
     const fileContainingBlock = this.app.vault.getAbstractFileByPath(block.$file);
     const cache = this.app.metadataCache.getCache(block.$file);
-    if (!(fileContainingBlock instanceof import_obsidian31.TFile) || !cache)
+    if (!(fileContainingBlock instanceof import_obsidian30.TFile) || !cache)
       return;
     const { editor, start, end, file } = context;
     const settings = resolveSettings(void 0, this.plugin, file);
@@ -5429,7 +5184,7 @@ var MathSearchCore = class {
       success = true;
     }
     if (!success) {
-      new import_obsidian31.Notice(`${this.plugin.manifest.name}: Failed to read cache. Retry again later.`, 5e3);
+      new import_obsidian30.Notice(`${this.plugin.manifest.name}: Failed to read cache. Retry again later.`, 5e3);
     }
   }
 };
@@ -5467,7 +5222,7 @@ var PartialSearchCore = class extends MathSearchCore {
       return TheoremCalloutBlock.isTheoremCalloutBlock(block);
     if (this.type === "equation")
       return EquationBlock.isEquationBlock(block);
-    return MathBoosterBlock.isMathBoosterBlock(block);
+    return MathBlock.isMathBlock(block);
   }
   async getUnsortedSuggestions() {
     const ids = [];
@@ -5513,8 +5268,142 @@ var DataviewQuerySearchCore = class extends PartialSearchCore {
   }
 };
 
+// src/search/editor-suggest.ts
+var LinkAutocomplete = class extends import_obsidian32.EditorSuggest {
+  /**
+   * @param type The type of the block to search for. See: index/typings/markdown.ts
+   */
+  constructor(plugin) {
+    super(plugin.app);
+    this.plugin = plugin;
+    this.setTriggers();
+    this.core = new WholeVaultTheoremEquationSearchCore(this);
+    this.core.setScope();
+  }
+  get dvQuery() {
+    return this.plugin.extraSettings.autocompleteDvQuery;
+  }
+  getContext() {
+    return this.context;
+  }
+  getSelectedItem() {
+    return this.suggestions.values[this.suggestions.selectedItem];
+  }
+  onTrigger(cursor, editor) {
+    for (const [trigger, { range, queryType }] of this.triggers) {
+      const text = editor.getLine(cursor.line);
+      const index = text.lastIndexOf(trigger);
+      if (index >= 0) {
+        const query = text.slice(index + trigger.length);
+        if (query.startsWith("[["))
+          return null;
+        this.queryType = queryType;
+        this.range = range;
+        const core = MathSearchCore.getCore(this);
+        if (!core)
+          return null;
+        this.core = core;
+        this.limit = this.plugin.extraSettings.suggestNumber;
+        return {
+          start: { line: cursor.line, ch: index },
+          end: cursor,
+          query
+        };
+      }
+    }
+    return null;
+  }
+  getSuggestions(context) {
+    return this.core.getSuggestions(context.query);
+  }
+  renderSuggestion(block, el) {
+    this.core.renderSuggestion(block, el);
+  }
+  selectSuggestion(item, evt) {
+    this.core.selectSuggestion(item, evt);
+  }
+  setTriggers() {
+    const unsortedTriggers = {};
+    if (this.plugin.extraSettings.enableSuggest) {
+      unsortedTriggers[this.plugin.extraSettings.triggerSuggest] = { range: "vault", queryType: "both" };
+    }
+    if (this.plugin.extraSettings.enableTheoremSuggest) {
+      unsortedTriggers[this.plugin.extraSettings.triggerTheoremSuggest] = { range: "vault", queryType: "theorem" };
+    }
+    if (this.plugin.extraSettings.enableEquationSuggest) {
+      unsortedTriggers[this.plugin.extraSettings.triggerEquationSuggest] = { range: "vault", queryType: "equation" };
+    }
+    if (this.plugin.extraSettings.enableSuggestRecentNotes) {
+      unsortedTriggers[this.plugin.extraSettings.triggerSuggestRecentNotes] = { range: "recent", queryType: "both" };
+    }
+    if (this.plugin.extraSettings.enableTheoremSuggestRecentNotes) {
+      unsortedTriggers[this.plugin.extraSettings.triggerTheoremSuggestRecentNotes] = { range: "recent", queryType: "theorem" };
+    }
+    if (this.plugin.extraSettings.enableEquationSuggestRecentNotes) {
+      unsortedTriggers[this.plugin.extraSettings.triggerEquationSuggestRecentNotes] = { range: "recent", queryType: "equation" };
+    }
+    if (this.plugin.extraSettings.enableSuggestActiveNote) {
+      unsortedTriggers[this.plugin.extraSettings.triggerSuggestActiveNote] = { range: "active", queryType: "both" };
+    }
+    if (this.plugin.extraSettings.enableTheoremSuggestActiveNote) {
+      unsortedTriggers[this.plugin.extraSettings.triggerTheoremSuggestActiveNote] = { range: "active", queryType: "theorem" };
+    }
+    if (this.plugin.extraSettings.enableEquationSuggestActiveNote) {
+      unsortedTriggers[this.plugin.extraSettings.triggerEquationSuggestActiveNote] = { range: "active", queryType: "equation" };
+    }
+    if (this.plugin.extraSettings.enableSuggestDataview) {
+      unsortedTriggers[this.plugin.extraSettings.triggerSuggestDataview] = { range: "dataview", queryType: "both" };
+    }
+    if (this.plugin.extraSettings.enableTheoremSuggestDataview) {
+      unsortedTriggers[this.plugin.extraSettings.triggerTheoremSuggestDataview] = { range: "dataview", queryType: "theorem" };
+    }
+    if (this.plugin.extraSettings.enableEquationSuggestDataview) {
+      unsortedTriggers[this.plugin.extraSettings.triggerEquationSuggestDataview] = { range: "dataview", queryType: "equation" };
+    }
+    const sortedTriggers = /* @__PURE__ */ new Map();
+    Object.entries(unsortedTriggers).sort((a, b) => b[0].length - a[0].length).forEach(([k, v]) => sortedTriggers.set(k, v));
+    this.triggers = sortedTriggers;
+  }
+};
+
 // src/patches/link-completion.ts
 var import_obsidian33 = require("obsidian");
+
+// node_modules/monkey-around/mjs/index.js
+function around(obj, factories) {
+  const removers = Object.keys(factories).map((key) => around1(obj, key, factories[key]));
+  return removers.length === 1 ? removers[0] : function() {
+    removers.forEach((r) => r());
+  };
+}
+function around1(obj, method, createWrapper) {
+  const original = obj[method], hadOwn = obj.hasOwnProperty(method);
+  let current = createWrapper(original);
+  if (original)
+    Object.setPrototypeOf(current, original);
+  Object.setPrototypeOf(wrapper, current);
+  obj[method] = wrapper;
+  return remove;
+  function wrapper(...args) {
+    if (current === original && obj[method] === wrapper)
+      remove();
+    return current.apply(this, args);
+  }
+  function remove() {
+    if (obj[method] === wrapper) {
+      if (hadOwn)
+        obj[method] = original;
+      else
+        delete obj[method];
+    }
+    if (current === original)
+      return;
+    current = original;
+    Object.setPrototypeOf(wrapper, original || Function);
+  }
+}
+
+// src/patches/link-completion.ts
 var patchLinkCompletion = (plugin) => {
   const suggest = plugin.app.workspace.editorSuggest.suggests[0];
   if (!Object.hasOwn(suggest, "suggestManager"))
@@ -5526,16 +5415,18 @@ var patchLinkCompletion = (plugin) => {
         var _a, _b;
         old.call(this, item, el);
         if (plugin.extraSettings.showTheoremTitleinBuiltin && item.type === "block" && item.node.type === "callout" && isTheoremCallout(plugin, item.node.callout.type)) {
-          let title = (_b = (_a = item.node.children.find((child) => child.type === "callout-title")) == null ? void 0 : _a.children[0].value) != null ? _b : "";
+          let title = (_b = (_a = item.node.children.find((child) => child.type === "callout-title")) == null ? void 0 : _a.children.map((child) => child.value).join("")) != null ? _b : "";
           const content = item.display.slice(title.length);
           const page = plugin.indexManager.index.load(item.file.path);
           if (MarkdownPage.isMarkdownPage(page)) {
             const block = page.getBlockByLineNumber(item.node.position.start.line - 1);
             if (TheoremCalloutBlock.isTheoremCalloutBlock(block)) {
               renderInSuggestionTitleEl(el, (suggestionTitleEl) => {
+                el.addClass("math-booster", "suggestion-item-theorem-callout");
                 suggestionTitleEl.replaceChildren();
-                suggestionTitleEl.createDiv({ text: block.$printName });
-                if (content)
+                const children = renderTextWithMath(block.$printName);
+                suggestionTitleEl.createDiv().replaceChildren(...children);
+                if (plugin.extraSettings.showTheoremContentinBuiltin && content)
                   suggestionTitleEl.createDiv({ text: content });
               });
               return;
@@ -5548,15 +5439,18 @@ var patchLinkCompletion = (plugin) => {
               title = "";
             const formattedTitle = formatTitle(plugin, item.file, resolveSettings({ type, number, title }, plugin, item.file), true);
             renderInSuggestionTitleEl(el, (suggestionTitleEl) => {
+              el.addClass("math-booster", "suggestion-item-theorem-callout");
               suggestionTitleEl.replaceChildren();
-              suggestionTitleEl.createDiv({ text: formattedTitle });
-              if (content)
+              const children = renderTextWithMath(formattedTitle);
+              suggestionTitleEl.createDiv().replaceChildren(...children);
+              if (plugin.extraSettings.showTheoremContentinBuiltin && content)
                 suggestionTitleEl.createDiv({ text: content });
             });
             return;
           }
         } else if (plugin.extraSettings.renderEquationinBuiltin && item.type === "block" && item.node.type === "math") {
           renderInSuggestionTitleEl(el, (suggestionTitleEl) => {
+            el.addClass("math-booster", "suggestion-item-equation");
             suggestionTitleEl.replaceChildren();
             suggestionTitleEl.appendChild((0, import_obsidian33.renderMath)(item.node.value, true));
           });
@@ -5572,9 +5466,296 @@ function renderInSuggestionTitleEl(el, cb) {
     cb(suggestionTitleEl);
 }
 
+// src/patches/page-preview.ts
+var patchPagePreview = (plugin) => {
+  const { app } = plugin;
+  plugin.register(
+    // @ts-ignore
+    around(app.internalPlugins.plugins["page-preview"].instance.constructor.prototype, {
+      onLinkHover(old) {
+        return function(parent, targetEl, linktext, ...args) {
+          old.call(this, parent, targetEl, linktext, ...args);
+          plugin.lastHoverLinktext = linktext;
+        };
+      }
+    })
+  );
+};
+
+// src/proof/live-preview.ts
+var import_obsidian34 = require("obsidian");
+var import_state4 = require("@codemirror/state");
+var import_view4 = require("@codemirror/view");
+var import_language3 = require("@codemirror/language");
+
+// src/proof/common.ts
+function makeProofClasses(which, profile) {
+  return [
+    "math-booster-" + which + "-proof",
+    // deprecated
+    "latex-referencer-" + which + "-proof",
+    ...profile.meta.tags.map((tag) => "math-booster-" + which + "-proof-" + tag),
+    // deprecated
+    ...profile.meta.tags.map((tag) => "latex-referencer-" + which + "-proof-" + tag)
+  ];
+}
+function makeProofElement(which, profile) {
+  return createSpan({
+    text: profile.body.proof[which],
+    cls: makeProofClasses(which, profile)
+  });
+}
+
+// src/proof/live-preview.ts
+var INLINE_CODE = "inline-code";
+var LINK_BEGIN = "formatting-link_formatting-link-start";
+var LINK = "hmd-internal-link";
+var LINK_END = "formatting-link_formatting-link-end";
+var ProofWidget = class extends import_view4.WidgetType {
+  constructor(plugin, profile) {
+    super();
+    this.plugin = plugin;
+    this.profile = profile;
+    this.containerEl = null;
+  }
+  eq(other) {
+    return this.profile.id === other.profile.id;
+  }
+  toDOM() {
+    var _a;
+    return (_a = this.containerEl) != null ? _a : this.containerEl = this.initDOM();
+  }
+  ignoreEvent(event) {
+    return false;
+  }
+};
+var BeginProofWidget = class _BeginProofWidget extends ProofWidget {
+  constructor(plugin, profile, display, linktext, sourcePath) {
+    super(plugin, profile);
+    this.display = display;
+    this.linktext = linktext;
+    this.sourcePath = sourcePath;
+  }
+  eq(other) {
+    return this.profile.id === other.profile.id && this.display === other.display && this.linktext === other.linktext && this.sourcePath == other.sourcePath;
+  }
+  initDOM() {
+    let display = this.linktext ? `${this.profile.body.proof.linkedBeginPrefix} [[${this.linktext}]]${this.profile.body.proof.linkedBeginSuffix}` : this.display;
+    if (display) {
+      const el = createSpan({ cls: makeProofClasses("begin", this.profile) });
+      _BeginProofWidget.renderDisplay(el, display, this.sourcePath, this.plugin);
+      return el;
+    }
+    return makeProofElement("begin", this.profile);
+  }
+  static async renderDisplay(el, display, sourcePath, plugin) {
+    const children = await renderMarkdown(display, sourcePath, plugin);
+    if (children) {
+      el.replaceChildren(...children);
+    }
+  }
+};
+var EndProofWidget = class extends ProofWidget {
+  initDOM() {
+    return makeProofElement("end", this.profile);
+  }
+};
+var createProofDecoration = (plugin) => import_view4.ViewPlugin.fromClass(
+  class {
+    constructor(view) {
+      this.decorations = this.makeDeco(view);
+    }
+    update(update2) {
+      if (update2.docChanged || update2.viewportChanged || update2.selectionSet) {
+        if (update2.view.composing) {
+          this.decorations = this.decorations.map(update2.changes);
+        } else {
+          this.decorations = this.makeDeco(update2.view);
+        }
+      }
+    }
+    makeDeco(view) {
+      var _a;
+      const { state } = view;
+      const { app } = plugin;
+      const tree = (0, import_language3.syntaxTree)(state);
+      const ranges = state.selection.ranges;
+      const file = state.field(import_obsidian34.editorInfoField).file;
+      const sourcePath = (_a = file == null ? void 0 : file.path) != null ? _a : "";
+      const settings = resolveSettings(void 0, plugin, file != null ? file : app.vault.getRoot());
+      const profile = plugin.extraSettings.profiles[settings.profile];
+      const builder = new import_state4.RangeSetBuilder();
+      for (const { from, to } of view.visibleRanges) {
+        tree.iterate({
+          from,
+          to,
+          enter(node) {
+            var _a2, _b, _c, _d, _e, _f;
+            if (node.name !== INLINE_CODE)
+              return;
+            let start = -1;
+            let end = -1;
+            let display = null;
+            let linktext = null;
+            const text = nodeText(node, state);
+            if (text.startsWith(settings.beginProof)) {
+              const rest = text.slice(settings.beginProof.length);
+              if (!rest) {
+                start = node.from - 1;
+                end = node.to + 1;
+                display = null;
+              } else {
+                const match = rest.match(/^\[(.*)\]$/);
+                if (match) {
+                  start = node.from - 1;
+                  end = node.to + 1;
+                  display = match[1];
+                }
+              }
+              if (start === -1 || end === -1)
+                return;
+              if (state.sliceDoc(node.to + 1, node.to + 2) == "@") {
+                const next = (_a2 = node.node.nextSibling) == null ? void 0 : _a2.nextSibling;
+                const afterNext = (_c = (_b = node.node.nextSibling) == null ? void 0 : _b.nextSibling) == null ? void 0 : _c.nextSibling;
+                const afterAfterNext = (_f = (_e = (_d = node.node.nextSibling) == null ? void 0 : _d.nextSibling) == null ? void 0 : _e.nextSibling) == null ? void 0 : _f.nextSibling;
+                if ((next == null ? void 0 : next.name) === LINK_BEGIN && (afterNext == null ? void 0 : afterNext.name) === LINK && (afterAfterNext == null ? void 0 : afterAfterNext.name) === LINK_END) {
+                  linktext = nodeText(afterNext, state);
+                  end = afterAfterNext.to;
+                }
+              }
+              if (!rangesHaveOverlap(ranges, start, end)) {
+                builder.add(
+                  start,
+                  end,
+                  import_view4.Decoration.replace({
+                    widget: new BeginProofWidget(plugin, profile, display, linktext, sourcePath)
+                  })
+                );
+              }
+            } else if (text === settings.endProof) {
+              start = node.from - 1;
+              end = node.to + 1;
+              if (!rangesHaveOverlap(ranges, start, end)) {
+                builder.add(
+                  start,
+                  end,
+                  import_view4.Decoration.replace({
+                    widget: new EndProofWidget(plugin, profile)
+                  })
+                );
+              }
+            }
+          }
+        });
+      }
+      return builder.finish();
+    }
+  },
+  {
+    decorations: (instance) => instance.decorations
+  }
+);
+
+// src/proof/reading-view.ts
+var import_obsidian35 = require("obsidian");
+var createProofProcessor = (plugin) => (element, context) => {
+  if (!plugin.extraSettings.enableProof)
+    return;
+  const { app } = plugin;
+  const file = app.vault.getAbstractFileByPath(context.sourcePath);
+  if (!(file instanceof import_obsidian35.TFile))
+    return;
+  const settings = resolveSettings(void 0, plugin, file);
+  const codes = element.querySelectorAll("code");
+  for (const code of codes) {
+    const text = code.textContent;
+    if (!text)
+      continue;
+    if (text.startsWith(settings.beginProof)) {
+      const rest = text.slice(settings.beginProof.length);
+      let displayMatch;
+      if (!rest) {
+        context.addChild(new ProofRenderer(app, plugin, code, "begin", file));
+      } else if (displayMatch = rest.match(/^\[(.*)\]$/)) {
+        const display = displayMatch[1];
+        context.addChild(new ProofRenderer(app, plugin, code, "begin", file, display));
+      }
+    } else if (code.textContent == settings.endProof) {
+      context.addChild(new ProofRenderer(app, plugin, code, "end", file));
+    }
+  }
+};
+function parseAtSignLink(codeEl) {
+  const next = codeEl.nextSibling;
+  const afterNext = next == null ? void 0 : next.nextSibling;
+  const afterAfterNext = afterNext == null ? void 0 : afterNext.nextSibling;
+  if (afterNext) {
+    if (next.nodeType == Node.TEXT_NODE && next.textContent == "@" && afterNext instanceof HTMLElement && afterNext.matches("a.original-internal-link") && afterAfterNext instanceof HTMLElement && afterAfterNext.matches("a.mathLink-internal-link")) {
+      return { atSign: next, links: [afterNext, afterAfterNext] };
+    }
+  }
+}
+var ProofRenderer = class extends import_obsidian35.MarkdownRenderChild {
+  constructor(app, plugin, containerEl, which, file, display) {
+    super(containerEl);
+    this.app = app;
+    this.plugin = plugin;
+    this.which = which;
+    this.file = file;
+    this.display = display;
+    this.atSignParseResult = parseAtSignLink(this.containerEl);
+  }
+  onload() {
+    this.update();
+    this.registerEvent(
+      this.plugin.indexManager.on("local-settings-updated", (file) => {
+        if (file == this.file) {
+          this.update();
+        }
+      })
+    );
+    this.registerEvent(
+      this.plugin.indexManager.on("global-settings-updated", () => {
+        this.update();
+      })
+    );
+  }
+  update() {
+    const settings = resolveSettings(void 0, this.plugin, this.file);
+    const profile = this.plugin.extraSettings.profiles[settings.profile];
+    if (this.atSignParseResult) {
+      const { atSign, links } = this.atSignParseResult;
+      const newEl2 = createSpan({ cls: makeProofClasses(this.which, profile) });
+      newEl2.replaceChildren(profile.body.proof.linkedBeginPrefix, ...links, profile.body.proof.linkedBeginSuffix);
+      this.containerEl.replaceWith(newEl2);
+      this.containerEl = newEl2;
+      atSign.textContent = "";
+      return;
+    }
+    if (this.display) {
+      this.renderDisplay(profile);
+      return;
+    }
+    const newEl = makeProofElement(this.which, profile);
+    this.containerEl.replaceWith(newEl);
+    this.containerEl = newEl;
+  }
+  async renderDisplay(profile) {
+    if (this.display) {
+      const children = await renderMarkdown(this.display, this.file.path, this.plugin);
+      if (children) {
+        const el = createSpan({ cls: makeProofClasses(this.which, profile) });
+        el.replaceChildren(...children);
+        this.containerEl.replaceWith(el);
+        this.containerEl = el;
+      }
+    }
+  }
+};
+
 // src/main.ts
 var VAULT_ROOT = "/";
-var MathBooster3 = class extends import_obsidian34.Plugin {
+var LatexReferencer3 = class extends import_obsidian36.Plugin {
   constructor() {
     super(...arguments);
     this.dependencies = {
@@ -5592,6 +5773,9 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
       var _a;
       const dependenciesOK = Object.keys(this.dependencies).every((id) => this.checkDependency(id));
       const v1 = !first && ((_a = version == null ? void 0 : version.startsWith("1.")) != null ? _a : true);
+      if (v1 || version.localeCompare("2.2.0", void 0, { numeric: true }) < 0) {
+        new RenameNoticeModal(this).open();
+      }
       if (!dependenciesOK || v1) {
         new DependencyNotificationModal(this, dependenciesOK, v1).open();
       }
@@ -5605,10 +5789,9 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
       );
     });
     this.registerEvent(
-      // this.app.metadataCache.on("math-booster:local-settings-updated", async (file) => {
       this.indexManager.on("local-settings-updated", async (file) => {
         this.app.workspace.iterateRootLeaves((leaf) => {
-          if (leaf.view instanceof import_obsidian34.MarkdownView) {
+          if (leaf.view instanceof import_obsidian36.MarkdownView) {
             this.setProfileTagAsCSSClass(leaf.view);
           }
         });
@@ -5617,7 +5800,7 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
     this.registerEvent(
       this.indexManager.on("global-settings-updated", async () => {
         this.app.workspace.iterateRootLeaves((leaf) => {
-          if (leaf.view instanceof import_obsidian34.MarkdownView) {
+          if (leaf.view instanceof import_obsidian36.MarkdownView) {
             this.setProfileTagAsCSSClass(leaf.view);
           }
         });
@@ -5625,14 +5808,14 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
     );
     this.app.workspace.onLayoutReady(() => {
       this.app.workspace.iterateRootLeaves((leaf) => {
-        if (leaf.view instanceof import_obsidian34.MarkdownView) {
+        if (leaf.view instanceof import_obsidian36.MarkdownView) {
           this.setProfileTagAsCSSClass(leaf.view);
         }
       });
     });
     this.registerEvent(
       this.app.workspace.on("active-leaf-change", (leaf) => {
-        if ((leaf == null ? void 0 : leaf.view) instanceof import_obsidian34.MarkdownView) {
+        if ((leaf == null ? void 0 : leaf.view) instanceof import_obsidian36.MarkdownView) {
           this.setProfileTagAsCSSClass(leaf.view);
         }
       })
@@ -5643,6 +5826,15 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
     this.updateEditorExtensions();
     this.updateLinkAutocomplete();
     this.app.workspace.onLayoutReady(() => patchLinkCompletion(this));
+    const itemNormalizer = (item) => {
+      return {
+        linktext: item.$file,
+        sourcePath: "",
+        line: item.$position.start
+      };
+    };
+    registerQuickPreview(this.app, this, LinkAutocomplete, itemNormalizer);
+    registerQuickPreview(this.app, this, MathSearchModal, itemNormalizer);
     this.registerMarkdownPostProcessor(createTheoremCalloutPostProcessor(this));
     this.registerMarkdownPostProcessor(createEquationNumberProcessor(this));
     this.app.workspace.onLayoutReady(() => this.forceRerender());
@@ -5724,96 +5916,7 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
       if (suggest instanceof LinkAutocomplete)
         suggestManager.removeSuggest(suggest);
     }
-    if (this.extraSettings.enableSuggest) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerSuggest) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerSuggest;
-        },
-        (parent) => new WholeVaultTheoremEquationSearchCore(parent)
-      ));
-    }
-    if (this.extraSettings.enableTheoremSuggest) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerTheoremSuggest) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerTheoremSuggest;
-        },
-        (parent) => new WholeVaultTheoremSearchCore(parent)
-      ));
-    }
-    if (this.extraSettings.enableEquationSuggest) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerEquationSuggest) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerEquationSuggest;
-        },
-        (parent) => new WholeVaultEquationSearchCore(parent)
-      ));
-    }
-    if (this.extraSettings.enableSuggestRecentNotes) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerSuggestRecentNotes) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerSuggestRecentNotes;
-        },
-        (parent) => new RecentNotesSearchCore(parent, "both")
-      ));
-    }
-    if (this.extraSettings.enableTheoremSuggestRecentNotes) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerTheoremSuggestRecentNotes) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerTheoremSuggestRecentNotes;
-        },
-        (parent) => new RecentNotesSearchCore(parent, "theorem")
-      ));
-    }
-    if (this.extraSettings.enableEquationSuggestRecentNotes) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerEquationSuggestRecentNotes) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerEquationSuggestRecentNotes;
-        },
-        (parent) => new RecentNotesSearchCore(parent, "equation")
-      ));
-    }
-    if (this.extraSettings.enableSuggestActiveNote) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerSuggestActiveNote) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerSuggestActiveNote;
-        },
-        (parent) => new ActiveNoteSearchCore(parent, "both")
-      ));
-    }
-    if (this.extraSettings.enableTheoremSuggestActiveNote) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerTheoremSuggestActiveNote) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerTheoremSuggestActiveNote;
-        },
-        (parent) => new ActiveNoteSearchCore(parent, "theorem")
-      ));
-    }
-    if (this.extraSettings.enableEquationSuggestActiveNote) {
-      this.registerEditorSuggest(new LinkAutocomplete(
-        this,
-        () => {
-          var _a;
-          return (_a = this.extraSettings.triggerEquationSuggestActiveNote) != null ? _a : DEFAULT_EXTRA_SETTINGS.triggerEquationSuggestActiveNote;
-        },
-        (parent) => new ActiveNoteSearchCore(parent, "equation")
-      ));
-    }
+    this.registerEditorSuggest(new LinkAutocomplete(this));
   }
   /**
    * Return true if the required plugin with the specified id is enabled and its version matches the requriement.
@@ -5834,11 +5937,15 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
     if (!view.file)
       return;
     const profile = getProfile(this, view.file);
-    const classes = profile.meta.tags.map((tag) => `math-booster-${tag}`);
+    const classes = [
+      ...profile.meta.tags.map((tag) => `math-booster-${tag}`),
+      // deprecated
+      ...profile.meta.tags.map((tag) => `latex-referencer-${tag}`)
+    ];
     for (const el of [getMarkdownSourceViewEl(view), getMarkdownPreviewViewEl(view)]) {
       if (el) {
         el.classList.forEach((cls) => {
-          if (cls.startsWith("math-booster-")) {
+          if (cls.startsWith("math-booster-") || cls.startsWith("latex-referencer-")) {
             el.classList.remove(cls);
           }
         });
@@ -5860,9 +5967,7 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
       this.editorExtensions.push(hideDisplayMathPreviewInQuote);
     }
     if (this.extraSettings.enableProof) {
-      this.editorExtensions.push(this.proofPositionField = proofPositionFieldFactory(this));
-      this.editorExtensions.push(proofDecorationFactory(this));
-      this.editorExtensions.push(proofFoldFactory(this));
+      this.editorExtensions.push(createProofDecoration(this));
     }
     this.app.workspace.updateOptions();
   }
@@ -5904,7 +6009,7 @@ var MathBooster3 = class extends import_obsidian34.Plugin {
       id: "open-local-settings-for-current-note",
       name: "Open local settings for the current note",
       callback: () => {
-        const view = this.app.workspace.getActiveViewOfType(import_obsidian34.MarkdownView);
+        const view = this.app.workspace.getActiveViewOfType(import_obsidian36.MarkdownView);
         if (view == null ? void 0 : view.file) {
           new ContextSettingModal(this.app, this, view.file).open();
         }

@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.2.0",
   "settings": {
     "/": {
       "profile": "English",
@@ -15,6 +15,7 @@
       "refFormat": "[type] [number] ([title])",
       "noteMathLinkFormat": "[title] if title exists, [type] [number] otherwise",
       "ignoreMainTheoremCalloutWithoutTitle": false,
+      "numberOnlyReferencedEquations": true,
       "inferEqNumberPrefix": true,
       "inferEqNumberPrefixFromProperty": "",
       "inferEqNumberPrefixRegExp": "^[0-9]+(\\.[0-9]+)*",
@@ -35,7 +36,8 @@
   },
   "extraSettings": {
     "foldDefault": "",
-    "noteTitleInLink": true,
+    "noteTitleInTheoremLink": true,
+    "noteTitleInEquationLink": true,
     "profiles": {
       "English": {
         "id": "English",
@@ -101,6 +103,7 @@
       }
     },
     "showTheoremTitleinBuiltin": true,
+    "showTheoremContentinBuiltin": false,
     "renderEquationinBuiltin": true,
     "triggerSuggest": "\\ref",
     "triggerTheoremSuggest": "\\tref",
@@ -111,6 +114,9 @@
     "triggerSuggestRecentNotes": "\\rer",
     "triggerTheoremSuggestRecentNotes": "\\trer",
     "triggerEquationSuggestRecentNotes": "\\eqrer",
+    "triggerSuggestDataview": "\\ref:d",
+    "triggerTheoremSuggestDataview": "\\tref:d",
+    "triggerEquationSuggestDataview": "\\eqref:d",
     "enableSuggest": true,
     "enableTheoremSuggest": true,
     "enableEquationSuggest": true,
@@ -120,6 +126,9 @@
     "enableSuggestRecentNotes": true,
     "enableTheoremSuggestRecentNotes": true,
     "enableEquationSuggestRecentNotes": true,
+    "enableSuggestDataview": true,
+    "enableTheoremSuggestDataview": true,
+    "enableEquationSuggestDataview": true,
     "renderMathInSuggestion": true,
     "suggestNumber": 20,
     "searchMethod": "Fuzzy",
@@ -137,6 +146,7 @@
     "excludeExampleCallout": false,
     "enableProof": true,
     "enableMathPreviewInCalloutAndQuote": true,
+    "autocompleteDvQuery": "",
     "searchModalQueryType": "both",
     "searchModalRange": "recent",
     "searchModalDvQuery": ""

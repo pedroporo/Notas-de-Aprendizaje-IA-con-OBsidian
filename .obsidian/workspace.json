@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md",
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "7. Transformers/7. Transformers (Research).md"
+                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
               }
             }
           },
@@ -160,29 +160,29 @@
       "daily-notes:Abrir la nota de hoy": false,
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
   "active": "651abc467876da80",
   "lastOpenFiles": [
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
-    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "7. Transformers/7. Transformers (Research).md",
+    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
+    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
+    "2. Perceptron Multicapa/metodos_de_activacion.png",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
+    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (Research).md",
     "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
-    "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
-    "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
     "Orden de que hay que saber en orden.canvas",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "4. Regresor lineal/4. Regresor lineal (Research).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (Research).md",
     "1.Perceptron Simple/imagenes/perceptron.jpg",
-    "2. Perceptron Multicapa/metodos_de_activacion.png",
     "Intento de chatbot/intents.json",
     "Intento de chatbot/intentos.json",
     "Intento de chatbot/test.py",

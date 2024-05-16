@@ -14,7 +14,7 @@
               "type": "markdown",
               "state": {
                 "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -150,7 +150,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -166,19 +167,19 @@
   },
   "active": "651abc467876da80",
   "lastOpenFiles": [
+    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
+    "Orden de que hay que saber en orden.canvas",
+    "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "7. Transformers/7. Transformers (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (Research).md",
     "2. Perceptron Multicapa/Perceptron Multicapa (ChatGPT).md",
     "2. Perceptron Multicapa/metodos_de_activacion.png",
-    "1.Perceptron Simple/Perceptron Simple (Research).md",
-    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (ChatGPT).md",
     "5. IA evolutiva/5. IA evolutiva (Research).md",
     "4. Regresor lineal/4. Regresor lineal (ChatGPT).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (ChatGPT).md",
-    "Orden de que hay que saber en orden.canvas",
     "6. Aprendizaje Convolucional y Adversativo/6. Aprendizaje Convolucional y Adversativo (Research).md",
     "4. Regresor lineal/4. Regresor lineal (Research).md",
     "3. Tipos de entrenamiento/3. Tipos de entrenamiento (Research).md",

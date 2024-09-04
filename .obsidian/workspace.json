@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "d8fcfc41060b6aaa",
+        "id": "cd506b2ef15d8abc",
         "type": "tabs",
         "children": [
           {
-            "id": "651abc467876da80",
+            "id": "22a5004ee7c1b5a0",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
-                "mode": "preview",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "1.Perceptron Simple/Perceptron Simple (Research).md"
-              }
+              "state": {}
             }
           },
           {
@@ -161,14 +153,15 @@
       "daily-notes:Abrir la nota de hoy": false,
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "651abc467876da80",
+  "active": "22a5004ee7c1b5a0",
   "lastOpenFiles": [
-    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
+    "Sin título.canvas",
     "Orden de que hay que saber en orden.canvas",
+    "Deep Learning by Ian Goodfellow, Yoshua Bengio, Aaron Courville (z-lib.org).pdf",
     "1.Perceptron Simple/Perceptron Simple (Research).md",
     "1.Perceptron Simple/Perceptron Simple (ChatGpt).md",
     "7. Transformers/7. Transformers (Research).md",

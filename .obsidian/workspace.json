@@ -11,8 +11,10 @@
             "id": "22a5004ee7c1b5a0",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.6.7"
+              }
             }
           }
         ]
@@ -142,8 +144,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -154,7 +155,8 @@
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "22a5004ee7c1b5a0",

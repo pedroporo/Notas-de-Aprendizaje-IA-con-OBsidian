@@ -4,17 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "cd506b2ef15d8abc",
+        "id": "42f205a9ed9680a8",
         "type": "tabs",
         "children": [
           {
-            "id": "22a5004ee7c1b5a0",
+            "id": "2cd539c63ad2ea79",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.6.7"
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -159,7 +157,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "22a5004ee7c1b5a0",
+  "active": "2cd539c63ad2ea79",
   "lastOpenFiles": [
     "Sin título.canvas",
     "Orden de que hay que saber en orden.canvas",
